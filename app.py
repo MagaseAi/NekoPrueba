@@ -35,10 +35,11 @@ def obtener_mangas():
     try:
         result = cloudinary.api.subfolders(CARPETA_BASE)
         print("MANGAS ENCONTRADOS:", result)
-        return [f["name"] for f in result.get("folders", [])]
+        # Retornar diccionario {nombre: {titulo: nombre, path: path}}
+        return {f["name"]: {"titulo": f["name"], "path": f["path"]} for f in result.get("folders", [])}
     except Exception as e:
         print(f"❌ Error al obtener mangas: {e}")
-        return []
+        return {}
 
 
 def obtener_caps(manga):
