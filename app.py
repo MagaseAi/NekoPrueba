@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import os
+import json
 from dotenv import load_dotenv
 import cloudinary
 import cloudinary.api
@@ -8,7 +9,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Verificar credenciales antes de configurar
 cloud_name = os.environ.get("CLOUD_NAME")
 api_key = os.environ.get("API_KEY")
 api_secret = os.environ.get("API_SECRET")
@@ -19,7 +19,7 @@ if not all([cloud_name, api_key, api_secret]):
     print(f"API_KEY: {'✅' if api_key else '❌ FALTA'}")
     print(f"API_SECRET: {'✅' if api_secret else '❌ FALTA'}")
 else:
-    print("✅ Credenciales de Cloudinary encontradas")
+    print("Credenciales de Cloudinary encontradas")
 
 cloudinary.config(
     cloud_name=cloud_name,
@@ -29,6 +29,17 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
+
+
+def cargar_info_mangas():
+    try:
+        with open("mangas.json", "r", encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"❌ Error al cargar mangas.json: {e}")
+        return {}
+
+INFO_MANGAS = cargar_info_mangas()
 
 
 def obtener_mangas():
@@ -66,7 +77,6 @@ def obtener_imagenes(manga, cap):
         urls = []
         for r in result.get("resources", []):
             url = r["secure_url"]
-            # 🔥 Optimización: calidad auto, formato auto, ancho max 1200px
             url = url.replace("/upload/", "/upload/q_auto,f_auto,w_1200/")
             urls.append(url)
 
@@ -83,10 +93,6 @@ def obtener_imagenes(manga, cap):
         print(f"❌ Error al obtener imágenes: {e}")
         return []
 
-
-# =========================
-# 🔥 RUTAS (ORDEN IMPORTANTE)
-# =========================
 
 @app.route("/")
 def main():
@@ -106,14 +112,12 @@ def favoritos():
     return render_template("favoritos.html", mangas=mangas)
 
 
-# 🔥 RUTA ESPECÍFICA ANTES DE LAS GENÉRICAS
 @app.route("/capitulo/<manga>/<cap>")
 def capitulo(manga, cap):
     print(f"🔍 Solicitando capítulo: {manga}/{cap}")
     return jsonify(obtener_imagenes(manga, cap))
 
 
-# 🔥 RUTAS GENÉRICAS AL FINAL
 @app.route("/<manga>")
 def info(manga):
     mangas = obtener_mangas()
@@ -125,7 +129,7 @@ def info(manga):
 
     capitulos = obtener_caps(manga)
 
-    datos = {
+    datos = INFO_MANGAS.get(manga, {
         "titulo": manga,
         "alternativos": [],
         "mangaka": "Desconocido",
@@ -133,7 +137,7 @@ def info(manga):
         "generos": "N/A",
         "estado": "N/A",
         "sinopsis": "Sin información"
-    }
+    })
 
     pagina = request.args.get("page", 1, type=int)
     por_pagina = 6
