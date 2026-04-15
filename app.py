@@ -63,7 +63,12 @@ def obtener_imagenes(manga, cap):
 
         print(f"📸 Imágenes encontradas: {len(result.get('resources', []))}")
 
-        urls = [r["secure_url"] for r in result.get("resources", [])]
+        urls = []
+        for r in result.get("resources", []):
+            url = r["secure_url"]
+            # 🔥 Optimización: calidad auto, formato auto, ancho max 1200px
+            url = url.replace("/upload/", "/upload/q_auto,f_auto,w_1200/")
+            urls.append(url)
 
         def ordenar(url):
             nombre = url.split("/")[-1].split(".")[0]
