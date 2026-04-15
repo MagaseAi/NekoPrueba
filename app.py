@@ -9,34 +9,21 @@ load_dotenv()
 
 app = Flask(__name__)
 
-cloud_name = os.environ.get("CLOUD_NAME")
-api_key = os.environ.get("API_KEY")
-api_secret = os.environ.get("API_SECRET")
-
-if not all([cloud_name, api_key, api_secret]):
-    print("❌ ERROR: Faltan credenciales de Cloudinary")
-    print(f"CLOUD_NAME: {'✅' if cloud_name else '❌ FALTA'}")
-    print(f"API_KEY: {'✅' if api_key else '❌ FALTA'}")
-    print(f"API_SECRET: {'✅' if api_secret else '❌ FALTA'}")
-else:
-    print("Credenciales de Cloudinary encontradas")
-
 cloudinary.config(
-    cloud_name=cloud_name,
-    api_key=api_key,
-    api_secret=api_secret,
+    cloud_name=os.environ.get("CLOUD_NAME"),
+    api_key=os.environ.get("API_KEY"),
+    api_secret=os.environ.get("API_SECRET"),
     secure=True
 )
 
 CARPETA_BASE = "mangas"
-
 
 def cargar_info_mangas():
     try:
         with open("mangas.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        print(f"❌ Error al cargar mangas.json: {e}")
+        print(f"Error al cargar mangas.json: {e}")
         return {}
 
 INFO_MANGAS = cargar_info_mangas()
@@ -44,35 +31,55 @@ INFO_MANGAS = cargar_info_mangas()
 
 def obtener_mangas():
     try:
-        result = cloudinary.api.subfolders(CARPETA_BASE)
-        print("MANGAS ENCONTRADOS:", result)
-        return {f["name"]: {"titulo": f["name"], "path": f["path"]} for f in result.get("folders", [])}
+        result = cloudinary.api.resources(
+            type="upload",
+            prefix=CARPETA_BASE,
+            max_results=500
+        )
+
+        mangas = set()
+
+        for r in result.get("resources", []):
+            partes = r["public_id"].split("/")
+            if len(partes) > 1:
+                mangas.add(partes[1])
+
+        return sorted(list(mangas))
+
     except Exception as e:
-        print(f"❌ Error al obtener mangas: {e}")
-        return {}
+        print("ERROR obtener_mangas:", e)
+        return []
 
 
 def obtener_caps(manga):
     try:
-        result = cloudinary.api.subfolders(f"{CARPETA_BASE}/{manga}")
-        print(f"CAPS DE {manga}:", result)
-        return [f["name"] for f in result.get("folders", [])]
+        result = cloudinary.api.resources(
+            type="upload",
+            prefix=f"{CARPETA_BASE}/{manga}",
+            max_results=500
+        )
+
+        caps = set()
+
+        for r in result.get("resources", []):
+            partes = r["public_id"].split("/")
+            if len(partes) > 2:
+                caps.add(partes[2])
+
+        return sorted(list(caps))
+
     except Exception as e:
-        print(f"❌ Error al obtener capítulos de {manga}: {e}")
+        print(f"ERROR obtener_caps {manga}:", e)
         return []
 
 
 def obtener_imagenes(manga, cap):
     try:
-        ruta = f"{CARPETA_BASE}/{manga}/{cap}"
-        print(f"🔍 Buscando en carpeta: {ruta}")
-        
-        result = cloudinary.api.resources_by_asset_folder(
-            asset_folder=ruta,
+        result = cloudinary.api.resources(
+            type="upload",
+            prefix=f"{CARPETA_BASE}/{manga}/{cap}",
             max_results=500
         )
-
-        print(f"📸 Imágenes encontradas: {len(result.get('resources', []))}")
 
         urls = []
         for r in result.get("resources", []):
@@ -83,20 +90,24 @@ def obtener_imagenes(manga, cap):
         def ordenar(url):
             nombre = url.split("/")[-1].split(".")[0]
             try:
+                if "_P" in nombre:
+                    return int(nombre.split("_P")[-1])
                 return int(nombre)
             except:
                 return 9999
 
         urls.sort(key=ordenar)
         return urls
+
     except Exception as e:
-        print(f"❌ Error al obtener imágenes: {e}")
+        print(f"ERROR obtener_imagenes {manga}/{cap}:", e)
         return []
 
 
 @app.route("/")
 def main():
     mangas = obtener_mangas()
+    print("MANGAS:", mangas)
     return render_template("main.html", mangas=mangas)
 
 
@@ -114,17 +125,14 @@ def favoritos():
 
 @app.route("/capitulo/<manga>/<cap>")
 def capitulo(manga, cap):
-    print(f"🔍 Solicitando capítulo: {manga}/{cap}")
     return jsonify(obtener_imagenes(manga, cap))
 
 
-@app.route("/<manga>")
+@app.route("/manga/<manga>")
 def info(manga):
     mangas = obtener_mangas()
-    print("LISTA MANGAS:", mangas)
 
     if manga not in mangas:
-        print("NO ENCONTRADO:", manga)
         return "Manga no encontrado", 404
 
     capitulos = obtener_caps(manga)
@@ -159,7 +167,7 @@ def info(manga):
     )
 
 
-@app.route("/<manga>/<cap>")
+@app.route("/manga/<manga>/<cap>")
 def leer(manga, cap):
     mangas = obtener_mangas()
 

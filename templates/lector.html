@@ -52,7 +52,7 @@ const mangaName = "{{ manga }}";
 const capName = "{{ cap }}";
 const fetchUrl = "/capitulo/" + encodeURIComponent(mangaName) + "/" + encodeURIComponent(capName);
 
-console.log("🔍 Cargando desde:", fetchUrl);
+console.log("Cargando desde:", fetchUrl);
 
 fetch(fetchUrl)
   .then(res => {
@@ -80,7 +80,7 @@ fetch(fetchUrl)
     mostrarPagina();
   })
   .catch(err => {
-    console.error("❌ Error:", err);
+    console.error("Error:", err);
     container.innerHTML = "<p style='color: #ff6b6b;'>Error al cargar las imágenes: " + err.message + "</p>";
   });
 

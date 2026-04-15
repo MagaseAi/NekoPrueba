@@ -40,7 +40,7 @@ body {
     text-align: center;
     background-color: #111;
 
-    padding: 40px 0; /* 🔥 reemplaza min-height */
+    padding: 40px 0;
 }
 
 
@@ -191,7 +191,6 @@ p {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* BUSCADOR */
 .resultados {
     position: absolute;
     top: 40px;

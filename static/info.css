@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-/* BODY */
 body {
   font-family: Arial, sans-serif;
   background-color: #111;
@@ -14,14 +13,12 @@ body {
   min-height: 100vh;
 }
 
-/* CONTENEDOR */
 .container {
   width: 90%;
   margin: auto;
   padding: 30px 0;
 }
 
-/* INFO DEL MANGA */
 .info {
   display: flex;
   gap: 30px;
@@ -49,19 +46,16 @@ body {
   margin-top: 15px;
 }
 
-/* TITULO CAPITULOS */
 h2 {
   margin-bottom: 15px;
 }
 
-/* GRID */
 .chapters {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
 }
 
-/* TARJETAS */
 .card {
   display: flex;
   align-items: center;
@@ -79,13 +73,11 @@ h2 {
   cursor: pointer;
 }
 
-/* HOVER */
 .card:hover {
   background: #ffcdd9;
   transform: scale(1.02);
 }
 
-/* TEXTO */
 .card h3 {
   font-size: 20px;
 }
@@ -95,7 +87,6 @@ h2 {
   color: #ffffff;
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
   .info {
     flex-direction: column;
@@ -172,7 +163,7 @@ a:focus {
 }
 
 .alt-nombres {
-  list-style: none; /* quita los puntitos */
+  list-style: none; 
   padding-left: 0;
   margin: 5px 0 10px;
 }
