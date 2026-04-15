@@ -37,18 +37,20 @@ def obtener_mangas():
             max_results=500
         )
 
-        mangas = set()
+        mangas = {}
 
         for r in result.get("resources", []):
             partes = r["public_id"].split("/")
             if len(partes) > 1:
-                mangas.add(partes[1])
+                nombre = partes[1]
+                if nombre not in mangas:
+                    mangas[nombre] = {"titulo": nombre, "path": f"{CARPETA_BASE}/{nombre}"}
 
-        return sorted(list(mangas))
+        return mangas
 
     except Exception as e:
         print("ERROR obtener_mangas:", e)
-        return []
+        return {}
 
 
 def obtener_caps(manga):
