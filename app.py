@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 import os
 import json
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import cloudinary
 import cloudinary.api
@@ -17,6 +18,7 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
+HORAS_NOVEDAD = 36
 
 def cargar_info_mangas():
     try:
@@ -29,6 +31,55 @@ def cargar_info_mangas():
 INFO_MANGAS = cargar_info_mangas()
 
 
+def es_reciente(fecha_str):
+    try:
+        fecha = datetime.fromisoformat(fecha_str.replace("Z", "+00:00"))
+        ahora = datetime.now(timezone.utc)
+        diferencia = ahora - fecha
+        return diferencia < timedelta(hours=HORAS_NOVEDAD)
+    except:
+        return False
+
+
+def obtener_novedades_manga(manga):
+    try:
+        caps = cloudinary.api.subfolders(f"{CARPETA_BASE}/{manga}")
+        capitulos = [f["name"] for f in caps.get("folders", [])]
+        
+        if not capitulos:
+            return None, None, None
+        
+        fecha_mas_reciente = None
+        cap_mas_reciente = None
+        
+        for cap in capitulos:
+            ruta = f"{CARPETA_BASE}/{manga}/{cap}"
+            result = cloudinary.api.resources_by_asset_folder(
+                asset_folder=ruta,
+                max_results=1,
+                direction="desc"
+            )
+            
+            recursos = result.get("resources", [])
+            if recursos:
+                fecha = recursos[0].get("created_at", "")
+                if fecha_mas_reciente is None or fecha > fecha_mas_reciente:
+                    fecha_mas_reciente = fecha
+                    cap_mas_reciente = cap
+        
+        if fecha_mas_reciente and es_reciente(fecha_mas_reciente):
+            if len(capitulos) == 1:
+                return "manga_nuevo", cap_mas_reciente, fecha_mas_reciente
+            else:
+                return "cap_nuevo", cap_mas_reciente, fecha_mas_reciente
+        
+        return None, None, None
+        
+    except Exception as e:
+        print(f"Error verificando novedades de {manga}: {e}")
+        return None, None, None
+
+
 def obtener_mangas():
     try:
         result = cloudinary.api.subfolders(CARPETA_BASE)
@@ -37,9 +88,35 @@ def obtener_mangas():
         mangas = {}
         for f in result.get("folders", []):
             nombre = f["name"]
-            mangas[nombre] = {"titulo": nombre, "path": f["path"]}
+            
+            tipo_novedad, cap_nuevo, fecha = obtener_novedades_manga(nombre)
+            
+            es_manga_nuevo = tipo_novedad == "manga_nuevo"
+            es_cap_nuevo = tipo_novedad == "cap_nuevo"
+            
+            if es_manga_nuevo:
+                prioridad = 2
+            elif es_cap_nuevo:
+                prioridad = 1
+            else:
+                prioridad = 0
+            
+            mangas[nombre] = {
+                "titulo": nombre,
+                "path": f["path"],
+                "es_manga_nuevo": es_manga_nuevo,
+                "es_cap_nuevo": es_cap_nuevo,
+                "cap_nuevo": cap_nuevo if es_cap_nuevo else "",
+                "prioridad": prioridad
+            }
         
-        return mangas
+        mangas_ordenados = dict(sorted(
+            mangas.items(),
+            key=lambda x: x[1]["prioridad"],
+            reverse=True
+        ))
+        
+        return mangas_ordenados
 
     except Exception as e:
         print("ERROR obtener_mangas:", e)
@@ -132,7 +209,7 @@ def info(manga):
         "editorial": "Desconocida",
         "generos": "N/A",
         "estado": "N/A",
-        "sinopsis": "Sin información"
+        "sinopsis": "Sin informacion"
     })
 
     pagina = request.args.get("page", 1, type=int)

@@ -376,3 +376,68 @@ a:focus {
         flex-direction: column;
     }
 }
+
+.manga-card {
+    position: relative;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.etiqueta-nuevo {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.etiqueta-nuevo span {
+    position: absolute;
+    display: block;
+    width: 100px;
+    padding: 8px 0;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    transform: rotate(-45deg);
+    top: 15px;
+    left: -25px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.etiqueta-roja span {
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+}
+
+.etiqueta-verde span {
+    background: linear-gradient(135deg, #44cc44, #00aa00);
+}
+
+.barra-nuevo {
+    position: absolute;
+    bottom: 45px;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    font-style: italic;
+    z-index: 5;
+}
+
+.barra-roja {
+    background: linear-gradient(90deg, rgba(255,68,68,0.9), rgba(204,0,0,0.9));
+}
+
+.barra-verde {
+    background: linear-gradient(90deg, rgba(68,204,68,0.9), rgba(0,170,0,0.9));
+}
