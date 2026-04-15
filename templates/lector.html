@@ -25,7 +25,7 @@
 
   <div class="botones">
     <button onclick="prevCap()">Cap anterior</button>   
-    <a href="/{{ manga }}" class="back-btn">Volver</a>
+    <a href="/manga/{{ manga }}" class="back-btn">Volver</a>
     <button onclick="nextCap()">Siguiente cap</button>
   </div>
 
@@ -60,11 +60,11 @@ fetch(fetchUrl)
     return res.json();
   })
   .then(data => {
-    console.log("📸 Imágenes recibidas:", data.length);
+    console.log("Imagenes recibidas:", data.length);
     paginas = data;
 
     if (paginas.length === 0) {
-      container.innerHTML = "<p style='color: #ff6b6b;'>No se encontraron imágenes para este capítulo.</p>";
+      container.innerHTML = "<p style='color: #ff6b6b;'>No se encontraron imagenes para este capitulo.</p>";
       return;
     }
 
@@ -73,7 +73,7 @@ fetch(fetchUrl)
     paginas.forEach((_, index) => {
       const option = document.createElement("option");
       option.value = index;
-      option.textContent = "Página " + (index + 1);
+      option.textContent = "Pagina " + (index + 1);
       pageSelect.appendChild(option);
     });
 
@@ -81,7 +81,7 @@ fetch(fetchUrl)
   })
   .catch(err => {
     console.error("Error:", err);
-    container.innerHTML = "<p style='color: #ff6b6b;'>Error al cargar las imágenes: " + err.message + "</p>";
+    container.innerHTML = "<p style='color: #ff6b6b;'>Error al cargar las imagenes: " + err.message + "</p>";
   });
 
 function mostrarPagina() {
@@ -172,13 +172,13 @@ let index = capitulos.indexOf(capActual);
 
 function nextCap() {
   if (index < capitulos.length - 1) {
-    window.location.href = "/" + encodeURIComponent(manga) + "/" + encodeURIComponent(capitulos[index + 1]);
+    window.location.href = "/manga/" + encodeURIComponent(manga) + "/" + encodeURIComponent(capitulos[index + 1]);
   }
 }
 
 function prevCap() {
   if (index > 0) {
-    window.location.href = "/" + encodeURIComponent(manga) + "/" + encodeURIComponent(capitulos[index - 1]);
+    window.location.href = "/manga/" + encodeURIComponent(manga) + "/" + encodeURIComponent(capitulos[index - 1]);
   }
 }
 

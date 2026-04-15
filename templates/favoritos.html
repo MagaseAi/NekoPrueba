@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         contenedor.innerHTML = "";
 
         if (favoritos.length === 0) {
-            contenedor.innerHTML = "<p>No tienes favoritos aún</p>";
+            contenedor.innerHTML = "<p>No tienes favoritos aun</p>";
             return;
         }
 
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (mangas[key]) {
 
                 const link = document.createElement("a");
-                link.href = "/" + key;
+                link.href = "/manga/" + key;
                 link.className = "manga-link";
 
                 const card = document.createElement("div");
