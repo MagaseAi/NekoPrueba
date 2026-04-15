@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}{{ datos.titulo }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <div class="info">
+
+    <!-- IZQUIERDA -->
+    <div class="cover-container">
+      <img src="{{ url_for('static', filename='portadas/' + manga + '.png') }}" class="cover">
+
+      <button onclick="toggleFavorito('{{ manga }}')" id="favBtn" class="fav-btn">
+        ⭐ Agregar a favoritos
+      </button>
+    </div>
+
+    <!-- CENTRO -->
+    <div class="details">
+      <h1>{{ datos.titulo }}</h1>
+
+      {% if datos.alternativos %}
+        <p><b>Nombres alternativos:</b></p>
+
+        {% if datos.alternativos is string %}
+          <p class="alt-text">{{ datos.alternativos }}</p>
+        {% else %}
+          <ul class="alt-nombres">
+            {% for nombre in datos.alternativos %}
+              <li>{{ nombre }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+
+      <p><b>Mangaka:</b> {{ datos.mangaka }}</p>
+      <p><b>Editorial:</b> {{ datos.editorial }}</p>
+      <p><b>Géneros:</b> {{ datos.generos }}</p>
+      <p><b>Estado:</b> {{ datos.estado }}</p>
+
+      <h3>Sinopsis</h3>
+      <p>{{ datos.sinopsis }}</p>
+    </div>
+
+    <!-- DERECHA -->
+    <div class="capitulos-container">
+      <h2 class="titulo-capitulos">Lista de capítulos:</h2>
+
+      <div class="chapters">
+        {% for cap in capitulos %}
+        <a href="/{{ manga }}/{{ cap }}" class="card-link">
+          <div class="card">
+            <div>
+              <h3>{{ cap }}</h3>
+              <p>Leer</p>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <div class="pagination">
+        {% if pagina > 1 %}
+          <a href="/{{ manga }}?page={{ pagina - 1 }}">←</a>
+        {% endif %}
+
+        {% for p in range(1, total_paginas + 1) %}
+          <a href="/{{ manga }}?page={{ p }}"
+             class="{% if p == pagina %}active{% endif %}">
+             {{ p }}
+          </a>
+        {% endfor %}
+
+        {% if pagina < total_paginas %}
+          <a href="/{{ manga }}?page={{ pagina + 1 }}">→</a>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

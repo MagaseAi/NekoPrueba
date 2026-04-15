@@ -1,0 +1,42 @@
+.manga-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.manga-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.manga-card {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.manga-card img {
+    width: 100%;
+    display: block;
+}
+
+.manga-card p {
+    padding: 10px;
+    font-size: 0.9rem;
+    color: black; 
+}
+
+.manga-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.titulo-grid {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: -300px; 
+}

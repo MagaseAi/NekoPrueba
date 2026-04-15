@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}{{ manga }} - {{ cap }}{% endblock %}
+
+{% block content %}
+
+<div class="lector-wrapper">
+
+  <div class="header-lector">
+    <h1>{{ manga }}</h1>
+    <h3>{{ cap }}</h3>
+  </div>
+
+  <div class="page-selector">
+    <select id="pageSelect"></select>
+    <button id="modoBtn" onclick="toggleModo()">Cascada</button>
+  </div>
+
+  <div class="reader-container" id="readerContainer">
+    <img id="mangaPage" draggable="false">
+
+    <div class="nav-overlay left" onclick="prevPage()">⬅</div>
+    <div class="nav-overlay right" onclick="nextPage()">➡</div>
+  </div>
+
+  <div class="botones">
+    <button onclick="prevCap()">Cap anterior</button>   
+    <a href="/{{ manga }}" class="back-btn">Volver</a>
+    <button onclick="nextCap()">Siguiente cap</button>
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+// 🔒 BLOQUEOS BÁSICOS
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("dragstart", e => e.preventDefault());
+
+let paginas = [];
+let paginaActual = 0;
+let modoWebtoon = false;
+
+const container = document.getElementById("readerContainer");
+let img = document.getElementById("mangaPage");
+const pageSelect = document.getElementById("pageSelect");
+
+fetch("/capitulo/{{ manga }}/{{ cap }}")
+  .then(res => res.json())
+  .then(data => {
+    paginas = data;
+
+    if (paginas.length === 0) return;
+
+    pageSelect.innerHTML = "";
+
+    paginas.forEach((_, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = "Página " + (index + 1);
+      pageSelect.appendChild(option);
+    });
+
+    mostrarPagina();
+  });
+
+function mostrarPagina() {
+  if (!modoWebtoon) {
+    img.src = paginas[paginaActual];
+    pageSelect.value = paginaActual;
+    precargar();
+  }
+}
+
+function precargar() {
+  if (paginaActual + 1 < paginas.length) {
+    const nextImg = new Image();
+    nextImg.src = paginas[paginaActual + 1];
+  }
+}
+
+function nextPage() {
+  if (modoWebtoon) return;
+
+  if (paginaActual < paginas.length - 1) {
+    paginaActual++;
+    mostrarPagina();
+  } else {
+    nextCap();
+  }
+}
+
+function prevPage() {
+  if (modoWebtoon) return;
+
+  if (paginaActual > 0) {
+    paginaActual--;
+    mostrarPagina();
+  }
+}
+
+document.addEventListener("click", (e) => {
+  if (e.target.id === "mangaPage") nextPage();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (modoWebtoon) return;
+
+  if (e.key === "ArrowRight") nextPage();
+  if (e.key === "ArrowLeft") prevPage();
+});
+
+pageSelect.addEventListener("change", () => {
+  paginaActual = parseInt(pageSelect.value);
+  mostrarPagina();
+});
+
+function toggleModo() {
+  modoWebtoon = !modoWebtoon;
+
+  if (modoWebtoon) {
+    document.getElementById("modoBtn").textContent = "Paginada";
+    container.innerHTML = "";
+
+    paginas.forEach(src => {
+      let imagen = document.createElement("img");
+      imagen.src = src;
+      imagen.classList.add("webtoon-img");
+      imagen.draggable = false;
+      container.appendChild(imagen);
+    });
+
+  } else {
+    document.getElementById("modoBtn").textContent = "Cascada";
+
+    container.innerHTML = `
+      <img id="mangaPage" draggable="false">
+      <div class="nav-overlay left" onclick="prevPage()">⬅</div>
+      <div class="nav-overlay right" onclick="nextPage()">➡</div>
+    `;
+
+    img = document.getElementById("mangaPage");
+    mostrarPagina();
+  }
+}
+
+const capitulos = {{ capitulos | tojson }};
+const manga = "{{ manga }}";
+let capActual = "{{ cap }}";
+
+let index = capitulos.indexOf(capActual);
+
+function nextCap() {
+  if (index < capitulos.length - 1) {
+    window.location.href = "/" + manga + "/" + capitulos[index + 1];
+  }
+}
+
+function prevCap() {
+  if (index > 0) {
+    window.location.href = "/" + manga + "/" + capitulos[index - 1];
+  }
+}
+
+</script>
+
+{% endblock %}

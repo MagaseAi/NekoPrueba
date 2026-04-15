@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Favoritos{% endblock %}
+
+{% block content %}
+
+<section class="container">
+    <h1 class="titulo-grid">Favoritos</h1>
+
+    <div id="favoritos-grid" class="manga-grid"></div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    function cargarFavoritos() {
+        const contenedor = document.getElementById("favoritos-grid");
+        const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+        contenedor.innerHTML = "";
+
+        if (favoritos.length === 0) {
+            contenedor.innerHTML = "<p>No tienes favoritos aún</p>";
+            return;
+        }
+
+        favoritos.forEach(key => {
+            if (mangas[key]) {
+
+                const link = document.createElement("a");
+                link.href = "/" + key;
+                link.className = "manga-link";
+
+                const card = document.createElement("div");
+                card.className = "manga-card";
+
+                card.innerHTML = `
+                    <img src="/static/portadas/${key}.png" alt="${mangas[key].titulo}">
+                    <p>${mangas[key].titulo}</p>
+                `;
+
+                link.appendChild(card);
+                contenedor.appendChild(link);
+            }
+        });
+    }
+
+    cargarFavoritos();
+});
+</script>
+
+{% endblock %}

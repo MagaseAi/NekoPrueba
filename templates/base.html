@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}Neko{% endblock %}</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='info.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='lector.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='contacto.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='favoritos.css') }}">
+
+{% block extra_css %}{% endblock %}
+
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+<header class="navbar">
+
+    <div class="nav-left">
+        <a href="/">
+            <img src="{{ url_for('static', filename='logos/NekoLogo.png') }}" class="logo">
+        </a>
+        <h1 class="titulo">Neko no mangas</h1>
+    </div>
+
+    <nav class="nav-center">
+        <a href="/">Inicio</a>
+        <a href="/contacto">Contacto</a>
+        <a href="/favoritos">Guardados</a>
+    </nav>
+
+    <div class="nav-right">
+        <input type="text" id="buscador" placeholder="Buscar" onkeyup="busqueda()">
+        <div id="resultados" class="resultados"></div>
+    </div>
+
+</header>
+
+<!-- 🔥 IMPORTANTE: wrapper principal -->
+<main class="main-content">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="footer">
+    <p>© 2026 El culto de la neko.</p>
+    <p>
+        Todo contenido pertenece a sus respectivos autores y editoriales. 
+        Si eres propietario de alguno de los materiales disponibles y deseas su eliminación, contáctanos.
+    </p>
+</footer>
+
+<script>
+const mangas = {{ mangas | tojson | safe if mangas else '{}' }};
+
+function busqueda () {
+    let input = document.getElementById("buscador").value.toLowerCase();
+    let resultados = document.getElementById("resultados");
+
+    resultados.innerHTML = "";
+
+    if (input === "") {
+        resultados.style.display = "none";
+        return;
+    }
+
+    for (let key in mangas) {
+        let titulo = mangas[key].titulo.toLowerCase();
+
+        if (titulo.includes(input)) {
+            let div = document.createElement("div");
+            div.textContent = mangas[key].titulo;
+
+            div.onclick = () => {
+                window.location.href = "/" + key;
+            };
+
+            resultados.appendChild(div);
+        }
+    }
+
+    resultados.style.display = "block";
+}
+</script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

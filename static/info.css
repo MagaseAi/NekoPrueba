@@ -1,0 +1,197 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: white;
+  position: relative;
+  padding-bottom: 25px;
+  min-height: 100vh;
+}
+
+/* CONTENEDOR */
+.container {
+  width: 90%;
+  margin: auto;
+  padding: 30px 0;
+}
+
+/* INFO DEL MANGA */
+.info {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 40px;
+  align-items: flex-start;
+}
+
+.cover {
+  width: 230px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.details h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.details p {
+  margin: 5px 0;
+  color: #ffffff;
+}
+
+.details h3 {
+  margin-top: 15px;
+}
+
+/* TITULO CAPITULOS */
+h2 {
+  margin-bottom: 15px;
+}
+
+/* GRID */
+.chapters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+/* TARJETAS */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 30px;
+
+  background: #ffffff0d;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+
+  backdrop-filter: blur(6px);
+  transition: all 0.3s ease;
+
+  cursor: pointer;
+}
+
+/* HOVER */
+.card:hover {
+  background: #ffcdd9;
+  transform: scale(1.02);
+}
+
+/* TEXTO */
+.card h3 {
+  font-size: 20px;
+}
+
+.card p {
+  font-size: 18px;
+  color: #ffffff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cover {
+    width: 180px;
+  }
+}
+
+.pagination {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 5px;
+  padding: 8px 12px;
+  background: #222;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.pagination a:hover {
+  background: #ff95af;
+}
+
+.pagination .active {
+  background: #ff95af;
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:visited {
+  color: inherit;
+}
+
+a:active {
+  color: inherit;
+}
+
+a:focus {
+  outline: none;
+}
+
+.cover-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fav-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #ff95af;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.fav-btn:hover {
+  background: #e1556d;
+}
+
+.alt-nombres {
+  list-style: none; /* quita los puntitos */
+  padding-left: 0;
+  margin: 5px 0 10px;
+}
+
+.alt-nombres li {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.alt-text {
+  color: #ccc;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.capitulos-container {
+  flex: 1;
+}
+
+.titulo-capitulos {
+  margin-bottom: 15px;
+}

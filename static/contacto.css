@@ -1,0 +1,42 @@
+.contacto {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.contact-card {
+    display: block;
+    padding: 30px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    transition: 0.3s;
+}
+
+.contact-card:hover {
+    transform: scale(1.05);
+}
+.twitter{background: black ;}
+.discord { background: #5865F2; }
+.correo { background: #ff95af; }
+.facebook { background: #1877f2; }
+
+.contact-image {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.contact-image img {
+    max-width: 300px;
+    width: 100%;
+    border-radius: 12px;
+    opacity: 0.9;
+}

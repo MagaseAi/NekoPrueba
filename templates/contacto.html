@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto{% endblock %}
+
+{% block content %}
+
+<section class="contacto">
+
+    <h1>Contacto</h1>
+      <h2>Cualquier duda, error de la pagina o error de traducción, pueden contactarnos a traves de estos lugares.</h2>
+
+
+    <div class="contact-grid">
+
+
+        <a href="#" class="contact-card discord">
+            <h2>Discord</h2>
+            <p>Server muerto, pero algun dia sera revivido</p>
+            <span>Entrar al servidor </span>
+        </a>
+
+        <a href="mailto:nekkontacto@gmail.com" class="contact-card correo">
+            <h2>Correo</h2>
+            <p>Contáctanos directamente.</p>
+            <span>nekkontacto@gmail.com</span>
+        </a>
+
+        <a href="https://www.facebook.com/profile.php?id=100092105245005" target="_blank" class="contact-card facebook">
+            <h2>Facebook</h2>
+            <p>Síguenos para novedades.</p>
+            <span>Ir a la página</span>
+        </a>
+
+          <a href="#" class="contact-card twitter">
+            <h2>X/Twitter</h2>
+            <p>Sigueneos</p>
+            <span>Proximamente</span>
+        </a>
+
+    </div>
+
+      <div class="contact-image">
+        <img src="{{ url_for('static', filename='imagenes/Sunna.gif') }}" alt="Contacto">
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='contacto.css') }}">
+
+{% endblock %}
