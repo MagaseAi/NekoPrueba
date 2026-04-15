@@ -1,3 +1,14 @@
+Ya veo los problemas. Aquí están las correcciones:
+
+🔧 Problema 1: Imágenes no cargan en el lector
+El problema es que las URLs con espacios no se codifican correctamente. Cambia el fetch en lector.html:
+
+// ❌ ANTES
+fetch("/capitulo/{{ manga }}/{{ cap }}")
+
+// ✅ DESPUÉS
+fetch("/capitulo/" + encodeURIComponent("{{ manga }}") + "/" + encodeURIComponent("{{ cap }}"))
+📄 lector.html corregido
 {% extends "base.html" %}
 
 {% block title %}{{ manga }} - {{ cap }}{% endblock %}
@@ -37,7 +48,6 @@
 
 <script>
 
-// 🔒 BLOQUEOS BÁSICOS
 document.addEventListener("contextmenu", e => e.preventDefault());
 document.addEventListener("dragstart", e => e.preventDefault());
 
@@ -49,12 +59,25 @@ const container = document.getElementById("readerContainer");
 let img = document.getElementById("mangaPage");
 const pageSelect = document.getElementById("pageSelect");
 
-fetch("/capitulo/{{ manga }}/{{ cap }}")
-  .then(res => res.json())
+const mangaName = "{{ manga }}";
+const capName = "{{ cap }}";
+const fetchUrl = "/capitulo/" + encodeURIComponent(mangaName) + "/" + encodeURIComponent(capName);
+
+console.log("🔍 Cargando desde:", fetchUrl);
+
+fetch(fetchUrl)
+  .then(res => {
+    if (!res.ok) throw new Error("Error " + res.status);
+    return res.json();
+  })
   .then(data => {
+    console.log("📸 Imágenes recibidas:", data.length);
     paginas = data;
 
-    if (paginas.length === 0) return;
+    if (paginas.length === 0) {
+      container.innerHTML = "<p style='color: #ff6b6b;'>No se encontraron imágenes para este capítulo.</p>";
+      return;
+    }
 
     pageSelect.innerHTML = "";
 
@@ -66,10 +89,14 @@ fetch("/capitulo/{{ manga }}/{{ cap }}")
     });
 
     mostrarPagina();
+  })
+  .catch(err => {
+    console.error("❌ Error:", err);
+    container.innerHTML = "<p style='color: #ff6b6b;'>Error al cargar las imágenes: " + err.message + "</p>";
   });
 
 function mostrarPagina() {
-  if (!modoWebtoon) {
+  if (!modoWebtoon && paginas.length > 0) {
     img.src = paginas[paginaActual];
     pageSelect.value = paginaActual;
     precargar();
@@ -156,13 +183,13 @@ let index = capitulos.indexOf(capActual);
 
 function nextCap() {
   if (index < capitulos.length - 1) {
-    window.location.href = "/" + manga + "/" + capitulos[index + 1];
+    window.location.href = "/" + encodeURIComponent(manga) + "/" + encodeURIComponent(capitulos[index + 1]);
   }
 }
 
 function prevCap() {
   if (index > 0) {
-    window.location.href = "/" + manga + "/" + capitulos[index - 1];
+    window.location.href = "/" + encodeURIComponent(manga) + "/" + encodeURIComponent(capitulos[index - 1]);
   }
 }
 
