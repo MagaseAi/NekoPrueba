@@ -18,7 +18,7 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
-HORAS_NOVEDAD = 36
+MINUTOS_NOVEDAD = 1  # 2160 para 36 horas
 
 def cargar_info_mangas():
     try:
@@ -36,48 +36,55 @@ def es_reciente(fecha_str):
         fecha = datetime.fromisoformat(fecha_str.replace("Z", "+00:00"))
         ahora = datetime.now(timezone.utc)
         diferencia = ahora - fecha
-        return diferencia < timedelta(hours=HORAS_NOVEDAD)
-    except:
+        return diferencia < timedelta(minutes=MINUTOS_NOVEDAD)
+    except Exception as e:
+        print(f"Error en es_reciente: {e}")
         return False
 
 
-def obtener_novedades_manga(manga):
+def obtener_novedades_manga(manga, capitulos):
     try:
-        caps = cloudinary.api.subfolders(f"{CARPETA_BASE}/{manga}")
-        capitulos = [f["name"] for f in caps.get("folders", [])]
-        
         if not capitulos:
-            return None, None, None
+            return None, None
         
-        fecha_mas_reciente = None
-        cap_mas_reciente = None
+        total_caps = len(capitulos)
+        caps_recientes = []
         
         for cap in capitulos:
             ruta = f"{CARPETA_BASE}/{manga}/{cap}"
-            result = cloudinary.api.resources_by_asset_folder(
-                asset_folder=ruta,
-                max_results=1,
-                direction="desc"
-            )
-            
-            recursos = result.get("resources", [])
-            if recursos:
-                fecha = recursos[0].get("created_at", "")
-                if fecha_mas_reciente is None or fecha > fecha_mas_reciente:
-                    fecha_mas_reciente = fecha
-                    cap_mas_reciente = cap
+            try:
+                result = cloudinary.api.resources_by_asset_folder(
+                    asset_folder=ruta,
+                    max_results=1
+                )
+                
+                recursos = result.get("resources", [])
+                if recursos:
+                    fecha = recursos[0].get("created_at", "")
+                    if es_reciente(fecha):
+                        caps_recientes.append(cap)
+            except:
+                continue
         
-        if fecha_mas_reciente and es_reciente(fecha_mas_reciente):
-            if len(capitulos) == 1:
-                return "manga_nuevo", cap_mas_reciente, fecha_mas_reciente
-            else:
-                return "cap_nuevo", cap_mas_reciente, fecha_mas_reciente
+        print(f"DEBUG {manga}: total_caps={total_caps}, caps_recientes={len(caps_recientes)}, lista={caps_recientes}")
         
-        return None, None, None
+        if len(caps_recientes) == 0:
+            return None, None
+        
+        if total_caps == 1 and len(caps_recientes) == 1:
+            return "manga_nuevo", None
+        
+        if len(caps_recientes) < total_caps:
+            return "cap_nuevo", caps_recientes[-1]
+        
+        if total_caps <= 2 and len(caps_recientes) == total_caps:
+            return "manga_nuevo", None
+        
+        return "cap_nuevo", caps_recientes[-1]
         
     except Exception as e:
         print(f"Error verificando novedades de {manga}: {e}")
-        return None, None, None
+        return None, None
 
 
 def obtener_mangas():
@@ -89,7 +96,13 @@ def obtener_mangas():
         for f in result.get("folders", []):
             nombre = f["name"]
             
-            tipo_novedad, cap_nuevo, fecha = obtener_novedades_manga(nombre)
+            try:
+                caps_result = cloudinary.api.subfolders(f"{CARPETA_BASE}/{nombre}")
+                capitulos = [c["name"] for c in caps_result.get("folders", [])]
+            except:
+                capitulos = []
+            
+            tipo_novedad, cap_nuevo = obtener_novedades_manga(nombre, capitulos)
             
             es_manga_nuevo = tipo_novedad == "manga_nuevo"
             es_cap_nuevo = tipo_novedad == "cap_nuevo"
@@ -101,12 +114,14 @@ def obtener_mangas():
             else:
                 prioridad = 0
             
+            print(f"Manga: {nombre}, Caps: {len(capitulos)}, Tipo: {tipo_novedad}, Cap nuevo: {cap_nuevo}")
+            
             mangas[nombre] = {
                 "titulo": nombre,
                 "path": f["path"],
                 "es_manga_nuevo": es_manga_nuevo,
                 "es_cap_nuevo": es_cap_nuevo,
-                "cap_nuevo": cap_nuevo if es_cap_nuevo else "",
+                "cap_nuevo": cap_nuevo if cap_nuevo else "",
                 "prioridad": prioridad
             }
         
