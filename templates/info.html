@@ -47,7 +47,7 @@
 
       <div class="chapters">
         {% for cap in capitulos %}
-        <a href="/{{ manga }}/{{ cap }}" class="card-link">
+        <a href="/manga/{{ manga }}/{{ cap }}" class="card-link">
           <div class="card">
             <div>
               <h3>{{ cap }}</h3>
@@ -60,18 +60,18 @@
 
       <div class="pagination">
         {% if pagina > 1 %}
-          <a href="/{{ manga }}?page={{ pagina - 1 }}">←</a>
+          <a href="/manga/{{ manga }}?page={{ pagina - 1 }}">←</a>
         {% endif %}
 
         {% for p in range(1, total_paginas + 1) %}
-          <a href="/{{ manga }}?page={{ p }}"
+          <a href="/manga/{{ manga }}?page={{ p }}"
              class="{% if p == pagina %}active{% endif %}">
              {{ p }}
           </a>
         {% endfor %}
 
         {% if pagina < total_paginas %}
-          <a href="/{{ manga }}?page={{ pagina + 1 }}">→</a>
+          <a href="/manga/{{ manga }}?page={{ pagina + 1 }}">→</a>
         {% endif %}
       </div>
     </div>

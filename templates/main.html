@@ -29,7 +29,7 @@
                 div.textContent = mangas[key].titulo;
 
                 div.onclick = () => {
-                    window.location.href = "/" + key;
+                    window.location.href = "/manga/" + key;
                 };
 
                 resultados.appendChild(div);
@@ -79,7 +79,7 @@
             <div class="manga-grid">
 
                 {% for key, manga in mangas.items() %}
-                <a href="/{{ key }}" class="manga-link">
+                <a href="/manga/{{ key }}" class="manga-link">
                     <div class="manga-card">
                         <img src="{{ url_for('static', filename='portadas/' + key + '.png') }}" alt="{{ manga.titulo }}">
                         <p>{{ manga.titulo }}</p>
