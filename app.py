@@ -35,7 +35,6 @@ def obtener_mangas():
     try:
         result = cloudinary.api.subfolders(CARPETA_BASE)
         print("MANGAS ENCONTRADOS:", result)
-        # Retornar diccionario {nombre: {titulo: nombre, path: path}}
         return {f["name"]: {"titulo": f["name"], "path": f["path"]} for f in result.get("folders", [])}
     except Exception as e:
         print(f"❌ Error al obtener mangas: {e}")
@@ -54,13 +53,15 @@ def obtener_caps(manga):
 
 def obtener_imagenes(manga, cap):
     try:
-        result = cloudinary.api.resources(
-            type="upload",
-            prefix=f"{CARPETA_BASE}/{manga}/{cap}",
+        ruta = f"{CARPETA_BASE}/{manga}/{cap}"
+        print(f"🔍 Buscando en carpeta: {ruta}")
+        
+        result = cloudinary.api.resources_by_asset_folder(
+            asset_folder=ruta,
             max_results=500
         )
 
-        print(f"IMÁGENES DE {manga}/{cap}:", result)
+        print(f"📸 Imágenes encontradas: {len(result.get('resources', []))}")
 
         urls = [r["secure_url"] for r in result.get("resources", [])]
 
@@ -74,12 +75,12 @@ def obtener_imagenes(manga, cap):
         urls.sort(key=ordenar)
         return urls
     except Exception as e:
-        print(f"❌ Error al obtener imágenes de {manga}/{cap}: {e}")
+        print(f"❌ Error al obtener imágenes: {e}")
         return []
 
 
 # =========================
-# 🔥 RUTAS
+# 🔥 RUTAS (ORDEN IMPORTANTE)
 # =========================
 
 @app.route("/")
@@ -100,6 +101,14 @@ def favoritos():
     return render_template("favoritos.html", mangas=mangas)
 
 
+# 🔥 RUTA ESPECÍFICA ANTES DE LAS GENÉRICAS
+@app.route("/capitulo/<manga>/<cap>")
+def capitulo(manga, cap):
+    print(f"🔍 Solicitando capítulo: {manga}/{cap}")
+    return jsonify(obtener_imagenes(manga, cap))
+
+
+# 🔥 RUTAS GENÉRICAS AL FINAL
 @app.route("/<manga>")
 def info(manga):
     mangas = obtener_mangas()
@@ -157,11 +166,6 @@ def leer(manga, cap):
         capitulos=capitulos,
         mangas=mangas
     )
-
-
-@app.route("/capitulo/<manga>/<cap>")
-def capitulo(manga, cap):
-    return jsonify(obtener_imagenes(manga, cap))
 
 
 if __name__ == "__main__":

@@ -1,14 +1,3 @@
-Ya veo los problemas. Aquí están las correcciones:
-
-🔧 Problema 1: Imágenes no cargan en el lector
-El problema es que las URLs con espacios no se codifican correctamente. Cambia el fetch en lector.html:
-
-// ❌ ANTES
-fetch("/capitulo/{{ manga }}/{{ cap }}")
-
-// ✅ DESPUÉS
-fetch("/capitulo/" + encodeURIComponent("{{ manga }}") + "/" + encodeURIComponent("{{ cap }}"))
-📄 lector.html corregido
 {% extends "base.html" %}
 
 {% block title %}{{ manga }} - {{ cap }}{% endblock %}
