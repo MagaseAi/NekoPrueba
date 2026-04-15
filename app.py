@@ -31,21 +31,14 @@ INFO_MANGAS = cargar_info_mangas()
 
 def obtener_mangas():
     try:
-        result = cloudinary.api.resources(
-            type="upload",
-            prefix=CARPETA_BASE,
-            max_results=500
-        )
-
+        result = cloudinary.api.subfolders(CARPETA_BASE)
+        print("MANGAS ENCONTRADOS:", result)
+        
         mangas = {}
-
-        for r in result.get("resources", []):
-            partes = r["public_id"].split("/")
-            if len(partes) > 1:
-                nombre = partes[1]
-                if nombre not in mangas:
-                    mangas[nombre] = {"titulo": nombre, "path": f"{CARPETA_BASE}/{nombre}"}
-
+        for f in result.get("folders", []):
+            nombre = f["name"]
+            mangas[nombre] = {"titulo": nombre, "path": f["path"]}
+        
         return mangas
 
     except Exception as e:
@@ -55,20 +48,9 @@ def obtener_mangas():
 
 def obtener_caps(manga):
     try:
-        result = cloudinary.api.resources(
-            type="upload",
-            prefix=f"{CARPETA_BASE}/{manga}",
-            max_results=500
-        )
-
-        caps = set()
-
-        for r in result.get("resources", []):
-            partes = r["public_id"].split("/")
-            if len(partes) > 2:
-                caps.add(partes[2])
-
-        return sorted(list(caps))
+        result = cloudinary.api.subfolders(f"{CARPETA_BASE}/{manga}")
+        print(f"CAPS DE {manga}:", result)
+        return [f["name"] for f in result.get("folders", [])]
 
     except Exception as e:
         print(f"ERROR obtener_caps {manga}:", e)
@@ -77,11 +59,15 @@ def obtener_caps(manga):
 
 def obtener_imagenes(manga, cap):
     try:
-        result = cloudinary.api.resources(
-            type="upload",
-            prefix=f"{CARPETA_BASE}/{manga}/{cap}",
+        ruta = f"{CARPETA_BASE}/{manga}/{cap}"
+        print(f"Buscando en carpeta: {ruta}")
+        
+        result = cloudinary.api.resources_by_asset_folder(
+            asset_folder=ruta,
             max_results=500
         )
+
+        print(f"Imagenes encontradas: {len(result.get('resources', []))}")
 
         urls = []
         for r in result.get("resources", []):
