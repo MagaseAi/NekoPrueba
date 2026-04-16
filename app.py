@@ -21,7 +21,7 @@ CARPETA_BASE = "mangas"
 MINUTOS_NOVEDAD = 1
 
 CACHE = {}
-CACHE_TIEMPO = 1800
+CACHE_TIEMPO = 60
 
 
 def obtener_cache(key):
