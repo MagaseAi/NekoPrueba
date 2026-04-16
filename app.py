@@ -18,7 +18,7 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
-MINUTOS_NOVEDAD = 1  # Cambiar a 2160 para 36 horas, pa que no se me olvide xdddd
+MINUTOS_NOVEDAD = 1
 
 CACHE = {}
 CACHE_TIEMPO = 1800
@@ -93,6 +93,13 @@ def obtener_caps_recientes(manga):
     return caps_recientes
 
 
+def ordenar_cap(cap):
+    try:
+        return int(''.join(filter(str.isdigit, cap)))
+    except:
+        return 9999
+
+
 def obtener_caps(manga):
     cache_key = f"caps:{manga}"
     cache = obtener_cache(cache_key)
@@ -103,12 +110,6 @@ def obtener_caps(manga):
     try:
         result = cloudinary.api.subfolders(f"{CARPETA_BASE}/{manga}")
         caps = [f["name"] for f in result.get("folders", [])]
-
-        def ordenar_cap(cap):
-            try:
-                return int(''.join(filter(str.isdigit, cap)))
-            except:
-                return 9999
 
         caps.sort(key=ordenar_cap)
 
