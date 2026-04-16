@@ -53,6 +53,14 @@ def cargar_info_mangas():
 INFO_MANGAS = cargar_info_mangas()
 
 
+def ordenar_cap(cap):
+    try:
+        return int(''.join(filter(str.isdigit, cap)))
+    except:
+        return 9999
+
+
+# 🔥 FIX SIMPLE (solo ordenamos correctamente)
 def obtener_caps_recientes(manga):
     cache_key = f"recientes:{manga}"
     cache = obtener_cache(cache_key)
@@ -79,25 +87,24 @@ def obtener_caps_recientes(manga):
 
             try:
                 fecha_dt = datetime.fromisoformat(fecha.replace("Z", "+00:00"))
+
                 if (ahora - fecha_dt) < timedelta(minutes=MINUTOS_NOVEDAD):
                     cap = folder.split("/")[-1]
+
                     if cap not in caps_recientes:
                         caps_recientes.append(cap)
+
             except:
                 continue
 
     except:
         pass
 
+    # 🔥 ORDEN CORRECTO (clave del fix)
+    caps_recientes.sort(key=ordenar_cap)
+
     guardar_cache(cache_key, caps_recientes)
     return caps_recientes
-
-
-def ordenar_cap(cap):
-    try:
-        return int(''.join(filter(str.isdigit, cap)))
-    except:
-        return 9999
 
 
 def obtener_caps(manga):
