@@ -32,6 +32,11 @@ body {
   box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
+.details {
+  flex: 1;
+  max-width: 500px;
+}
+
 .details h1 {
   font-size: 28px;
   margin-bottom: 10px;
@@ -40,6 +45,7 @@ body {
 .details p {
   margin: 5px 0;
   color: #ffffff;
+  word-wrap: break-word;
 }
 
 .details h3 {
@@ -60,17 +66,15 @@ h2 {
   display: flex;
   align-items: center;
   gap: 15px;
-
   padding: 30px;
-
   background: #ffffff0d;
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 12px;
-
   backdrop-filter: blur(6px);
   transition: all 0.3s ease;
-
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -87,6 +91,22 @@ h2 {
   color: #ffffff;
 }
 
+.card-nuevo {
+  border: 2px solid #cc0000;
+}
+
+.cap-etiqueta-nuevo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 5px 15px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 @media (max-width: 768px) {
   .info {
     flex-direction: column;
@@ -96,6 +116,10 @@ h2 {
 
   .cover {
     width: 180px;
+  }
+  
+  .details {
+    max-width: 100%;
   }
 }
 
@@ -121,7 +145,6 @@ h2 {
 .pagination .active {
   background: #ff95af;
 }
-
 
 a {
   text-decoration: none;
@@ -186,52 +209,37 @@ a:focus {
 .titulo-capitulos {
   margin-bottom: 15px;
 }
-.card {
-    position: relative;
-    overflow: hidden;
-}
-
-.card-nuevo {
-    border: 2px solid #cc0000;
-}
-
-.cap-etiqueta-nuevo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: linear-gradient(135deg, #ff4444, #cc0000);
-    color: white;
-    padding: 5px 15px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
 
 .sinopsis-container {
-    position: relative;
+  position: relative;
+  max-width: 100%;
 }
 
 .sinopsis-texto {
-    max-height: 80px;
-    overflow: hidden;
-    line-height: 1.5;
-    transition: max-height 0.3s ease;
+  max-height: 80px;
+  overflow: hidden;
+  line-height: 1.5;
+  transition: max-height 0.3s ease;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .sinopsis-texto.sinopsis-expandida {
-    max-height: 1000px;
+  max-height: 2000px;
 }
 
 .btn-leer-mas {
-    background: none;
-    border: none;
-    color: #fea8ab;
-    cursor: pointer;
-    padding: 5px 0;
-    font-size: 14px;
-    text-decoration: underline;
+  background: none;
+  border: none;
+  color: #fea8ab;
+  cursor: pointer;
+  padding: 5px 0;
+  font-size: 14px;
+  text-decoration: underline;
+  display: block;
+  margin-top: 5px;
 }
 
 .btn-leer-mas:hover {
-    color: #ff7a85;
+  color: #ff7a85;
 }
