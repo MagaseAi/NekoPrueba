@@ -441,3 +441,11 @@ a:focus {
 .barra-verde {
     background: linear-gradient(90deg, rgba(68,204,68,0.9), rgba(0,170,0,0.9));
 }
+
+.titulo-finalizados {
+    margin-top: 50px;
+}
+
+.barra-naranja {
+    background: linear-gradient(90deg, rgba(255,140,0,0.9), rgba(255,100,0,0.9));
+}

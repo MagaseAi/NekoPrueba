@@ -77,8 +77,7 @@
             <h2 class="titulo-grid">Mangas</h2>
 
             <div class="manga-grid">
-
-                {% for key, manga in mangas.items() %}
+                {% for key, manga in mangas_emision.items() %}
                 <a href="/manga/{{ key }}" class="manga-link">
                     <div class="manga-card">
                         
@@ -99,8 +98,26 @@
                     </div>
                 </a>
                 {% endfor %}
-
             </div>
+
+            {% if mangas_finalizados %}
+            <h2 class="titulo-grid titulo-finalizados">Finalizados</h2>
+
+            <div class="manga-grid">
+                {% for key, manga in mangas_finalizados.items() %}
+                <a href="/manga/{{ key }}" class="manga-link">
+                    <div class="manga-card">
+                        
+                        <div class="barra-nuevo barra-naranja">Finalizado</div>
+                        
+                        <img src="{{ url_for('static', filename='portadas/' + key + '.png') }}" alt="{{ manga.titulo }}">
+                        <p>{{ manga.titulo }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+
         </div>
 
         <div class="right-content">
