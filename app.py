@@ -18,15 +18,14 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
-MINUTOS_NOVEDAD = 1  # Cambiar a 2160 para las 36 horas, si no ya fue xD
+MINUTOS_NOVEDAD = 1  # Cambiar a 2160 para 36 horas, pa que no se me olvide xdddd
 
 CACHE = {}
-CACHE_TIEMPO = 1800  # 30 minutos
+CACHE_TIEMPO = 1800
 
 
 def obtener_cache(key):
     data = CACHE.get(key)
-
     if not data:
         return None
 
@@ -42,12 +41,12 @@ def obtener_cache(key):
 def guardar_cache(key, valor):
     CACHE[key] = (valor, datetime.now().timestamp())
 
+
 def cargar_info_mangas():
     try:
         with open("mangas.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except Exception as e:
-        print(f"Error al cargar mangas.json: {e}")
+    except:
         return {}
 
 
@@ -87,11 +86,12 @@ def obtener_caps_recientes(manga):
             except:
                 continue
 
-    except Exception as e:
-        print(f"Error recientes {manga}:", e)
+    except:
+        pass
 
     guardar_cache(cache_key, caps_recientes)
     return caps_recientes
+
 
 def obtener_caps(manga):
     cache_key = f"caps:{manga}"
@@ -104,12 +104,20 @@ def obtener_caps(manga):
         result = cloudinary.api.subfolders(f"{CARPETA_BASE}/{manga}")
         caps = [f["name"] for f in result.get("folders", [])]
 
+        def ordenar_cap(cap):
+            try:
+                return int(''.join(filter(str.isdigit, cap)))
+            except:
+                return 9999
+
+        caps.sort(key=ordenar_cap)
+
         guardar_cache(cache_key, caps)
         return caps
 
-    except Exception as e:
-        print(f"ERROR obtener_caps {manga}:", e)
+    except:
         return []
+
 
 def obtener_imagenes(manga, cap):
     cache_key = f"imagenes:{manga}:{cap}"
@@ -135,8 +143,6 @@ def obtener_imagenes(manga, cap):
         def ordenar(url):
             nombre = url.split("/")[-1].split(".")[0]
             try:
-                if "_P" in nombre:
-                    return int(nombre.split("_P")[-1])
                 return int(nombre)
             except:
                 return 9999
@@ -146,9 +152,9 @@ def obtener_imagenes(manga, cap):
         guardar_cache(cache_key, urls)
         return urls
 
-    except Exception as e:
-        print(f"ERROR obtener_imagenes {manga}/{cap}:", e)
+    except:
         return []
+
 
 def obtener_novedades_manga(manga, capitulos):
     try:
@@ -167,14 +173,14 @@ def obtener_novedades_manga(manga, capitulos):
         if len(caps_recientes) < total_caps:
             return "cap_nuevo", caps_recientes[-1]
 
-        if total_caps <= 2 and len(caps_recientes) == total_caps:
+        if total_caps <= 2:
             return "manga_nuevo", None
 
         return "cap_nuevo", caps_recientes[-1]
 
-    except Exception as e:
-        print(f"Error novedades {manga}:", e)
+    except:
         return None, None
+
 
 def obtener_mangas():
     cache = obtener_cache("mangas")
@@ -195,76 +201,60 @@ def obtener_mangas():
 
             tipo_novedad, cap_nuevo = obtener_novedades_manga(nombre, capitulos)
 
-            es_manga_nuevo = tipo_novedad == "manga_nuevo"
-            es_cap_nuevo = tipo_novedad == "cap_nuevo"
-
-            prioridad = 2 if es_manga_nuevo else 1 if es_cap_nuevo else 0
+            prioridad = 2 if tipo_novedad == "manga_nuevo" else 1 if tipo_novedad == "cap_nuevo" else 0
 
             info_manga = INFO_MANGAS.get(nombre, {})
             estado = info_manga.get("estado", "En emision")
             es_finalizado = estado.lower() == "finalizado"
 
-            manga_data = {
+            data = {
                 "titulo": nombre,
                 "path": f["path"],
-                "es_manga_nuevo": es_manga_nuevo,
-                "es_cap_nuevo": es_cap_nuevo,
-                "cap_nuevo": cap_nuevo if cap_nuevo else "",
+                "es_manga_nuevo": tipo_novedad == "manga_nuevo",
+                "es_cap_nuevo": tipo_novedad == "cap_nuevo",
+                "cap_nuevo": cap_nuevo or "",
                 "prioridad": prioridad,
                 "estado": estado,
                 "es_finalizado": es_finalizado
             }
 
             if es_finalizado:
-                mangas_finalizados[nombre] = manga_data
+                mangas_finalizados[nombre] = data
             else:
-                mangas_emision[nombre] = manga_data
+                mangas_emision[nombre] = data
 
-        mangas_emision_ordenados = dict(sorted(
-            mangas_emision.items(),
-            key=lambda x: x[1]["prioridad"],
-            reverse=True
-        ))
+        mangas_emision = dict(sorted(mangas_emision.items(), key=lambda x: x[1]["prioridad"], reverse=True))
+        mangas_finalizados = dict(sorted(mangas_finalizados.items(), key=lambda x: x[1]["titulo"]))
 
-        mangas_finalizados_ordenados = dict(sorted(
-            mangas_finalizados.items(),
-            key=lambda x: x[1]["titulo"]
-        ))
+        guardar_cache("mangas", (mangas_emision, mangas_finalizados))
+        return mangas_emision, mangas_finalizados
 
-        resultado = (mangas_emision_ordenados, mangas_finalizados_ordenados)
-        guardar_cache("mangas", resultado)
-
-        return resultado
-
-    except Exception as e:
-        print("ERROR obtener_mangas:", e)
+    except:
         return {}, {}
+
 
 @app.route("/")
 def main():
     mangas_emision, mangas_finalizados = obtener_mangas()
-    todos_mangas = {**mangas_emision, **mangas_finalizados}
+    todos = {**mangas_emision, **mangas_finalizados}
 
-    return render_template(
-        "main.html",
-        mangas=todos_mangas,
-        mangas_emision=mangas_emision,
-        mangas_finalizados=mangas_finalizados
-    )
+    return render_template("main.html", mangas=todos,
+                           mangas_emision=mangas_emision,
+                           mangas_finalizados=mangas_finalizados)
 
 
 @app.route("/contacto")
 def contacto():
     mangas_emision, mangas_finalizados = obtener_mangas()
-    todos_mangas = {**mangas_emision, **mangas_finalizados}
-    return render_template("contacto.html", mangas=todos_mangas)
+    todos = {**mangas_emision, **mangas_finalizados}
+    return render_template("contacto.html", mangas=todos)
 
 
 @app.route("/favoritos")
 def favoritos():
     mangas_emision, mangas_finalizados = obtener_mangas()
-    todos_mangas = {**mangas_emision, **mangas_finalizados}
-    return render_template("favoritos.html", mangas=todos_mangas)
+    todos = {**mangas_emision, **mangas_finalizados}
+    return render_template("favoritos.html", mangas=todos)
 
 
 @app.route("/capitulo/<manga>/<cap>")
@@ -275,23 +265,18 @@ def capitulo(manga, cap):
 @app.route("/manga/<manga>")
 def info(manga):
     mangas_emision, mangas_finalizados = obtener_mangas()
-    todos_mangas = {**mangas_emision, **mangas_finalizados}
+    todos = {**mangas_emision, **mangas_finalizados}
 
-    if manga not in todos_mangas:
+    if manga not in todos:
         return "Manga no encontrado", 404
 
     capitulos = obtener_caps(manga)
     caps_recientes = obtener_caps_recientes(manga)
 
-    datos = INFO_MANGAS.get(manga, {
-        "titulo": manga,
-        "alternativos": [],
-        "mangaka": "Desconocido",
-        "editorial": "Desconocida",
-        "generos": "N/A",
-        "estado": "N/A",
-        "sinopsis": "Sin informacion"
-    })
+    orden = request.args.get("orden", "asc")
+
+    if orden == "desc":
+        capitulos = list(reversed(capitulos))
 
     pagina = request.args.get("page", 1, type=int)
     por_pagina = 6
@@ -302,6 +287,8 @@ def info(manga):
     capitulos_pagina = capitulos[inicio:fin]
     total_paginas = (len(capitulos) + por_pagina - 1) // por_pagina
 
+    datos = INFO_MANGAS.get(manga, {"titulo": manga})
+
     return render_template(
         "info.html",
         capitulos=capitulos_pagina,
@@ -309,28 +296,24 @@ def info(manga):
         datos=datos,
         pagina=pagina,
         total_paginas=total_paginas,
-        mangas=todos_mangas,
-        caps_recientes=caps_recientes
+        mangas=todos,
+        caps_recientes=caps_recientes,
+        orden=orden
     )
 
 
 @app.route("/manga/<manga>/<cap>")
 def leer(manga, cap):
     mangas_emision, mangas_finalizados = obtener_mangas()
-    todos_mangas = {**mangas_emision, **mangas_finalizados}
-
-    if manga not in todos_mangas:
-        return "Manga no encontrado", 404
+    todos = {**mangas_emision, **mangas_finalizados}
 
     capitulos = obtener_caps(manga)
 
-    return render_template(
-        "lector.html",
-        cap=cap,
-        manga=manga,
-        capitulos=capitulos,
-        mangas=todos_mangas
-    )
+    return render_template("lector.html",
+                           cap=cap,
+                           manga=manga,
+                           capitulos=capitulos,
+                           mangas=todos)
 
 
 if __name__ == "__main__":
