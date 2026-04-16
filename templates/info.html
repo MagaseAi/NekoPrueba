@@ -10,6 +10,7 @@
 
     <div class="cover-container">
       <img src="{{ url_for('static', filename='portadas/' + manga + '.png') }}" class="cover">
+
       <button onclick="toggleFavorito('{{ manga }}')" id="favBtn" class="fav-btn">
         Agregar a favoritos
       </button>
@@ -17,6 +18,31 @@
 
     <div class="details">
       <h1>{{ datos.titulo }}</h1>
+
+      {% if datos.alternativos %}
+        <p><b>Nombres alternativos:</b></p>
+
+        {% if datos.alternativos is string %}
+          <p class="alt-text">{{ datos.alternativos }}</p>
+        {% else %}
+          <ul class="alt-nombres">
+            {% for nombre in datos.alternativos %}
+              <li>{{ nombre }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endif %}
+
+      <p><b>Mangaka:</b> {{ datos.mangaka }}</p>
+      <p><b>Editorial:</b> {{ datos.editorial }}</p>
+      <p><b>Generos:</b> {{ datos.generos }}</p>
+      <p><b>Estado:</b> {{ datos.estado }}</p>
+
+      <h3>Sinopsis</h3>
+      <div class="sinopsis-container">
+        <p id="sinopsisTexto" class="sinopsis-texto">{{ datos.sinopsis }}</p>
+        <button id="btnLeerMas" class="btn-leer-mas">Leer mas</button>
+      </div>
     </div>
 
     <div class="capitulos-container">
@@ -68,5 +94,30 @@
   </div>
 
 </div>
+
+<script>
+(function() {
+    let sinopsisExpandida = false;
+    const texto = document.getElementById('sinopsisTexto');
+    const btn = document.getElementById('btnLeerMas');
+    
+    if (texto && btn) {
+        if (texto.scrollHeight <= 85) {
+            btn.style.display = 'none';
+        }
+        
+        btn.addEventListener('click', function() {
+            if (sinopsisExpandida) {
+                texto.classList.remove('sinopsis-expandida');
+                btn.textContent = 'Leer mas';
+            } else {
+                texto.classList.add('sinopsis-expandida');
+                btn.textContent = 'Leer menos';
+            }
+            sinopsisExpandida = !sinopsisExpandida;
+        });
+    }
+})();
+</script>
 
 {% endblock %}
