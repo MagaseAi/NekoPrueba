@@ -186,3 +186,52 @@ a:focus {
 .titulo-capitulos {
   margin-bottom: 15px;
 }
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-nuevo {
+    border: 2px solid #cc0000;
+}
+
+.cap-etiqueta-nuevo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    color: white;
+    padding: 5px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.sinopsis-container {
+    position: relative;
+}
+
+.sinopsis-texto {
+    max-height: 80px;
+    overflow: hidden;
+    line-height: 1.5;
+    transition: max-height 0.3s ease;
+}
+
+.sinopsis-texto.sinopsis-expandida {
+    max-height: 1000px;
+}
+
+.btn-leer-mas {
+    background: none;
+    border: none;
+    color: #fea8ab;
+    cursor: pointer;
+    padding: 5px 0;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.btn-leer-mas:hover {
+    color: #ff7a85;
+}

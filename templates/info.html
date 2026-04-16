@@ -12,7 +12,7 @@
       <img src="{{ url_for('static', filename='portadas/' + manga + '.png') }}" class="cover">
 
       <button onclick="toggleFavorito('{{ manga }}')" id="favBtn" class="fav-btn">
-        ⭐ Agregar a favoritos
+        Agregar a favoritos
       </button>
     </div>
 
@@ -35,20 +35,26 @@
 
       <p><b>Mangaka:</b> {{ datos.mangaka }}</p>
       <p><b>Editorial:</b> {{ datos.editorial }}</p>
-      <p><b>Géneros:</b> {{ datos.generos }}</p>
+      <p><b>Generos:</b> {{ datos.generos }}</p>
       <p><b>Estado:</b> {{ datos.estado }}</p>
 
       <h3>Sinopsis</h3>
-      <p>{{ datos.sinopsis }}</p>
+      <div class="sinopsis-container">
+        <p id="sinopsisTexto" class="sinopsis-texto">{{ datos.sinopsis }}</p>
+        <button id="btnLeerMas" class="btn-leer-mas" onclick="toggleSinopsis()">Leer mas</button>
+      </div>
     </div>
 
     <div class="capitulos-container">
-      <h2 class="titulo-capitulos">Lista de capítulos:</h2>
+      <h2 class="titulo-capitulos">Lista de capitulos:</h2>
 
       <div class="chapters">
         {% for cap in capitulos %}
         <a href="/manga/{{ manga }}/{{ cap }}" class="card-link">
-          <div class="card">
+          <div class="card {% if cap in caps_recientes %}card-nuevo{% endif %}">
+            {% if cap in caps_recientes %}
+            <div class="cap-etiqueta-nuevo">Nuevo</div>
+            {% endif %}
             <div>
               <h3>{{ cap }}</h3>
               <p>Leer</p>
@@ -79,5 +85,33 @@
   </div>
 
 </div>
+
+<script>
+let sinopsisExpandida = false;
+
+function toggleSinopsis() {
+    const texto = document.getElementById('sinopsisTexto');
+    const btn = document.getElementById('btnLeerMas');
+    
+    if (sinopsisExpandida) {
+        texto.classList.remove('sinopsis-expandida');
+        btn.textContent = 'Leer mas';
+    } else {
+        texto.classList.add('sinopsis-expandida');
+        btn.textContent = 'Leer menos';
+    }
+    
+    sinopsisExpandida = !sinopsisExpandida;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const texto = document.getElementById('sinopsisTexto');
+    const btn = document.getElementById('btnLeerMas');
+    
+    if (texto.scrollHeight <= 80) {
+        btn.style.display = 'none';
+    }
+});
+</script>
 
 {% endblock %}

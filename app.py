@@ -18,7 +18,7 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
-MINUTOS_NOVEDAD = 1  # Cambiar a 2160 para 36 horas
+MINUTOS_NOVEDAD = 1  # Cambiar a 2160 para 36 horas, pa que no se me olvide xdddd
 
 def cargar_info_mangas():
     try:
@@ -42,29 +42,35 @@ def es_reciente(fecha_str):
         return False
 
 
+def obtener_caps_recientes(manga, capitulos):
+    caps_recientes = []
+    
+    for cap in capitulos:
+        ruta = f"{CARPETA_BASE}/{manga}/{cap}"
+        try:
+            result = cloudinary.api.resources_by_asset_folder(
+                asset_folder=ruta,
+                max_results=1
+            )
+            
+            recursos = result.get("resources", [])
+            if recursos:
+                fecha = recursos[0].get("created_at", "")
+                if es_reciente(fecha):
+                    caps_recientes.append(cap)
+        except:
+            continue
+    
+    return caps_recientes
+
+
 def obtener_novedades_manga(manga, capitulos):
     try:
         if not capitulos:
             return None, None
         
         total_caps = len(capitulos)
-        caps_recientes = []
-        
-        for cap in capitulos:
-            ruta = f"{CARPETA_BASE}/{manga}/{cap}"
-            try:
-                result = cloudinary.api.resources_by_asset_folder(
-                    asset_folder=ruta,
-                    max_results=1
-                )
-                
-                recursos = result.get("resources", [])
-                if recursos:
-                    fecha = recursos[0].get("created_at", "")
-                    if es_reciente(fecha):
-                        caps_recientes.append(cap)
-            except:
-                continue
+        caps_recientes = obtener_caps_recientes(manga, capitulos)
         
         print(f"DEBUG {manga}: total_caps={total_caps}, caps_recientes={len(caps_recientes)}, lista={caps_recientes}")
         
@@ -237,6 +243,8 @@ def info(manga):
         return "Manga no encontrado", 404
 
     capitulos = obtener_caps(manga)
+    
+    caps_recientes = obtener_caps_recientes(manga, capitulos)
 
     datos = INFO_MANGAS.get(manga, {
         "titulo": manga,
@@ -264,7 +272,8 @@ def info(manga):
         datos=datos,
         pagina=pagina,
         total_paginas=total_paginas,
-        mangas=todos_mangas
+        mangas=todos_mangas,
+        caps_recientes=caps_recientes
     )
 
 
