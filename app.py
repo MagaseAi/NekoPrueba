@@ -18,7 +18,7 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
-MINUTOS_NOVEDAD = 1
+MINUTOS_NOVEDAD = 5
 
 CACHE = {}
 CACHE_TIEMPO = 60
