@@ -144,6 +144,8 @@ def obtener_imagenes(manga, cap):
         def ordenar(url):
             nombre = url.split("/")[-1].split(".")[0]
             try:
+                if "_P" in nombre:
+                    return int(nombre.split("_P")[-1])
                 return int(nombre)
             except:
                 return 9999
