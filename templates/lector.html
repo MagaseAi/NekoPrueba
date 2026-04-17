@@ -24,9 +24,9 @@
   </div>
 
   <div class="botones">
-    <button onclick="prevCap()">Cap anterior</button>   
+    <button id="prevBtn" onclick="prevCap()">Cap anterior</button>   
     <a href="/manga/{{ manga }}" class="back-btn">Volver</a>
-    <button onclick="nextCap()">Siguiente cap</button>
+    <button id="nextBtn" onclick="nextCap()">Siguiente cap</button>
   </div>
 
 </div>
@@ -52,15 +52,12 @@ const mangaName = "{{ manga }}";
 const capName = "{{ cap }}";
 const fetchUrl = "/capitulo/" + encodeURIComponent(mangaName) + "/" + encodeURIComponent(capName);
 
-console.log("Cargando desde:", fetchUrl);
-
 fetch(fetchUrl)
   .then(res => {
     if (!res.ok) throw new Error("Error " + res.status);
     return res.json();
   })
   .then(data => {
-    console.log("Imagenes recibidas:", data.length);
     paginas = data;
 
     if (paginas.length === 0) {
@@ -80,7 +77,6 @@ fetch(fetchUrl)
     mostrarPagina();
   })
   .catch(err => {
-    console.error("Error:", err);
     container.innerHTML = "<p style='color: #ff6b6b;'>Error al cargar las imagenes: " + err.message + "</p>";
   });
 
@@ -169,6 +165,17 @@ const manga = "{{ manga }}";
 let capActual = "{{ cap }}";
 
 let index = capitulos.indexOf(capActual);
+
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+if (index === 0) {
+  prevBtn.style.display = "none";
+}
+
+if (index === capitulos.length - 1) {
+  nextBtn.style.display = "none";
+}
 
 function nextCap() {
   if (index < capitulos.length - 1) {
