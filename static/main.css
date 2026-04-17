@@ -333,12 +333,6 @@ a:focus {
 }
 
 
-.banner img {
-    width: 100%;
-    height: auto;
-}
-
-
 @media (max-width: 768px) {
     .chapters {
         grid-template-columns: 1fr;
@@ -435,11 +429,11 @@ a:focus {
 }
 
 .barra-roja {
-    background: linear-gradient(90deg, rgba(255,68,68,0.9), rgba(204,0,0,0.9));
+    background: linear-gradient(90deg, rgba(221, 77, 77, 0.9), rgba(226, 45, 45, 0.9));
 }
 
 .barra-verde {
-    background: linear-gradient(90deg, rgba(68,204,68,0.9), rgba(0,170,0,0.9));
+    background: linear-gradient(90deg, #93e745e6, #93e745e6);
 }
 
 .titulo-finalizados {
