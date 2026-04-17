@@ -175,14 +175,14 @@ a:focus {
   padding: 10px;
   border: none;
   border-radius: 10px;
-  background: #ff95af;
+  background: #9e3043;
   color: white;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .fav-btn:hover {
-  background: #9e3043;
+  background: #ff95af;
 }
 
 .alt-nombres {
@@ -231,7 +231,7 @@ a:focus {
 .btn-leer-mas {
   background: none;
   border: none;
-  color: #fea8ab;
+  color: #9e3043;
   cursor: pointer;
   padding: 5px 0;
   font-size: 14px;
@@ -244,7 +244,3 @@ a:focus {
   color: #ff7a85;
 }
 
-
-.Mostrar {
-  backgrond-color: #c53d53,  
-}
