@@ -182,7 +182,7 @@ a:focus {
 }
 
 .fav-btn:hover {
-  background: #e1556d;
+  background: #9e3043;
 }
 
 .alt-nombres {
@@ -242,4 +242,9 @@ a:focus {
 
 .btn-leer-mas:hover {
   color: #ff7a85;
+}
+
+
+.Mostrar {
+  backgrond-color: #c53d53,  
 }
