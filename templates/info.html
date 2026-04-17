@@ -48,7 +48,7 @@
     <div class="capitulos-container">
       <h2 class="titulo-capitulos">Lista de capitulos:</h2>
 
-      <div style="text-align:center; margin-bottom:15px;">
+      <div style="text-align:center; margin-bottom:15px; -webkit-text-stroke: 2px black">
         {% if orden == "asc" %}
           <a href="/manga/{{ manga }}?orden=desc" class="btn">Mostrar más nuevos</a>
         {% else %}
@@ -96,6 +96,7 @@
 </div>
 
 <script>
+
 (function() {
     let sinopsisExpandida = false;
     const texto = document.getElementById('sinopsisTexto');
@@ -118,6 +119,34 @@
         });
     }
 })();
+
+function toggleFavorito(manga) {
+    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+    if (favoritos.includes(manga)) {
+        favoritos = favoritos.filter(m => m !== manga);
+    } else {
+        favoritos.push(manga);
+    }
+
+    localStorage.setItem("favoritos", JSON.stringify(favoritos));
+    actualizarBoton(manga);
+}
+
+function actualizarBoton(manga) {
+    const btn = document.getElementById("favBtn");
+    let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
+
+    if (favoritos.includes(manga)) {
+        btn.textContent = "❌ Quitar de favoritos";
+    } else {
+        btn.textContent = "⭐ Agregar a favoritos";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    actualizarBoton("{{ manga }}");
+});
 </script>
 
 {% endblock %}
