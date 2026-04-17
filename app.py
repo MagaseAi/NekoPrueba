@@ -5,6 +5,7 @@ from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import cloudinary
 import cloudinary.api
+from cloudinary import search 
 
 load_dotenv()
 
@@ -60,7 +61,6 @@ def ordenar_cap(cap):
         return 9999
 
 
-# 🔥 FIX SIMPLE (solo ordenamos correctamente)
 def obtener_caps_recientes(manga):
     cache_key = f"recientes:{manga}"
     cache = obtener_cache(cache_key)
@@ -71,36 +71,33 @@ def obtener_caps_recientes(manga):
     caps_recientes = []
 
     try:
-        result = cloudinary.api.resources_by_asset_folder(
-            asset_folder=f"{CARPETA_BASE}/{manga}",
-            max_results=500
+        ahora = datetime.now(timezone.utc)
+        corte = ahora - timedelta(minutes=MINUTOS_NOVEDAD)
+
+        result = (
+            search.Search()
+            .expression(
+                f'asset_folder:"{CARPETA_BASE}/{manga}/*" '
+                f'AND uploaded_at>{int(corte.timestamp())}'
+            )
+            .sort_by("created_at", "desc")
+            .max_results(500)
+            .execute()
         )
 
-        ahora = datetime.now(timezone.utc)
-
         for r in result.get("resources", []):
-            fecha = r.get("created_at", "")
             folder = r.get("asset_folder", "")
-
-            if not fecha or not folder:
+            if not folder:
                 continue
 
-            try:
-                fecha_dt = datetime.fromisoformat(fecha.replace("Z", "+00:00"))
+            cap = folder.split("/")[-1]
 
-                if (ahora - fecha_dt) < timedelta(minutes=MINUTOS_NOVEDAD):
-                    cap = folder.split("/")[-1]
+            if cap and cap not in caps_recientes:
+                caps_recientes.append(cap)
 
-                    if cap not in caps_recientes:
-                        caps_recientes.append(cap)
+    except Exception as e:
+        print(f"Error obtener_caps_recientes({manga}): {e}")
 
-            except:
-                continue
-
-    except:
-        pass
-
-    # 🔥 ORDEN CORRECTO (clave del fix)
     caps_recientes.sort(key=ordenar_cap)
 
     guardar_cache(cache_key, caps_recientes)
