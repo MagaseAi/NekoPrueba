@@ -93,6 +93,116 @@
     "demografia":"Shounen", 
     "estado": "Finalizado",
     "sinopsis": "¡En el aula después de clase, Shinka-chan, la chica más inocente y bonita de la escuela, me hablaba mientras me tomaba de la mano...! Yo, Touta, me convertí en un sujeto de estudio de la psicología evolutiva, y desde el primer día que hablamos, ¡Comencé a salir con Shinka...!"
-}
-}
+  },
 
+  "Presidenta": {
+    "titulo": "La cara oculta de la presidenta",
+    "tipo": "One-Shot",
+    "alternativos": "生徒会長のウラの顔, Seitokaichou no Ura no Kao",
+    "mangaka": "Uhana Ririka",
+    "editorial": "...",
+    "generos": "Comedia, Romance, Vida escolar",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "Yomogi es un chico que no puede decir que no entonces no puede rechazar las peticiones de su novia."
+  },
+  
+    "Sindrome_de_pensamientos_impuros": {
+    "titulo": "Síndrome de pensamientos impuros",
+    "tipo": "One-Shot",
+    "alternativos": "よこしまシンドローム",
+    "mangaka": "Uhana Ririka",
+    "editorial": "...",
+    "generos": "Comedia, Romance, Vida escolar",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "Aoi es un chico que atrae con sus feromonas a las chicas y le pide ayuda a una chica de su clase para poder lidiar con el problema."
+  },
+
+    "Mi_hermana_y_yo": {
+    "titulo": "Mi hermana mayor, mi trasero atorado en una pared y yo",
+    "tipo": "One-Shot",
+    "alternativos": "Ane to Kabejiri to Watashi, 姉と壁尻と私",
+    "mangaka": "Hayashi Yoshihiko",
+    "editorial": "Shueisha",
+    "generos": "Comedia, Fantasia, Vida escolar",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "6 años mayor que ella, Yui es una genio que ya ha ganado un Premio Nobel. Mientras tanto, su hermana pequeña Mari, no es más que una estudiante de primaria común y corriente. En su lucha contra la enorme distancia que las separa, Mari se queda literalmente atrapada en una pared de camino a la escuela... "
+  },
+
+  "Mi_amiga_de_la_infancia": {
+    "titulo": "Mi amiga de la infancia",
+    "tipo": "One-Shot",
+    "alternativos": "Osananajimi no hito, おさななじみのひと",
+    "mangaka": "Komoda Kotohiro",
+    "editorial": "Shueisha",
+    "generos": "Romance, Vida escolar, Drama, Ecchi",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "Todavía admira en secreto a su amiga de la infancia, que rompió con él cuando era niño. Al reencontrarse con ella en la prepa después de tanto tiempo, él le hace una propuesta descabellada 'Quiero que me pise'."
+  },
+
+    "Sucubo": {
+    "titulo": "La sucubo no puede corromper a su esposo",
+    "tipo": "One-Shot",
+    "alternativos": "サキュバスなキミは夫を堕とせない, Succubus na Kimi wa Otto o Otosenai",
+    "mangaka": "Bobu",
+    "editorial": "...",
+    "generos": "Romance, Comedia",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "Koutaro Tachibana es un asalariado común y corriente, con una pequeña diferencia: su mujer, Kiyora, es una súcubo. Aunque cualquier hombre mataría por estar en su lugar, pero Kiyo es estricta y sensata, y sólo cuando entra en sus sueños se convierte en un demonio exhibicionista y coqueta dispuesta a succionarle la fuerza vital. Quizá esa sea la razón por la que hasta ahora sólo han hecho el amor en sus sueños. Por supuesto, Koutaro ama a Kiyo, pero también quiere llevar su relación al siguiente nivel. Pero ¿qué piensa Kiyo?" 
+    },
+
+  "Nitamono": {
+    "titulo": "El uno para el otro",
+    "tipo": "One-Shot",
+    "alternativos": "にたものどう, Nitamono doushi",
+    "mangaka": "Efu",
+    "editorial": "...",
+    "generos": "Drama, Romance, Vida escolar",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "Teru es un chico que, atormentado por un trauma infantil, se ve a sí mismo como un solitario y evita las relaciones humanas. Su única alegría proviene de los videojuegos... Hasta que un encuentro decisivo en su sala de juegos habitual comienza a sacudir su tranquilo mundo."
+  },
+
+  "Mama_Yuyu": {
+    "titulo": "MamaYuyu",
+    "tipo": "Manga",
+    "alternativos": "魔々勇々",
+    "mangaka": "Hayashi Yoshihiko",
+    "editorial": "Shueisha",
+    "generos": "Aventura, Acción, Drama, Fantasia",
+    "demografia":"Shounen", 
+    "estado": "Finalizado",
+    "sinopsis": "¡Se acerca una era de paz entre el héroe y el señor demonio! En este mundo pacífico, el héroe Corleo no es más que un traje vacío. ¡Pero un día, un héroe y un señor demonio de otro mundo aparecen ante él! ¿Cómo afrontará Corleo el caos que estos invasores traen a su mundo? ¡Ahora comienza un nuevo tipo de fantasía épica!"
+  },
+
+  "How_long": {
+    "titulo": "Hasta el dia que nos casemos",
+    "tipo": "Manga",
+    "alternativos": "Kekkon suru made Ato? Hi, 結婚するまであと？日",
+    "mangaka": "Yumeno Yuzu",
+    "editorial": "...",
+    "generos": "Romance, Comedia, Recuentos de la vida",
+    "demografia":"...", 
+    "estado": "Finalizado",
+    "sinopsis": "Manaka y Touma se conocen desde que eran pequeño, como ira su relacion a lo largo de los años..."
+  },
+
+  " ": {
+    "titulo": "",
+    "tipo": "",
+    "alternativos": "",
+    "mangaka": "",
+    "editorial": "",
+    "generos": "",
+    "demografia":"", 
+    "estado": "",
+    "sinopsis": ""
+  }
+
+
+
+}
