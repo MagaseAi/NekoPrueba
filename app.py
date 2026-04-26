@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 import os
 import json
+import re
 from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 import cloudinary
@@ -19,10 +20,15 @@ cloudinary.config(
 )
 
 CARPETA_BASE = "mangas"
-MINUTOS_NOVEDAD = 5
+MINUTOS_NOVEDAD = 10
 
 CACHE = {}
 CACHE_TIEMPO = 60
+CACHE_MAX = 1000 
+
+
+def es_valido(texto):
+    return bool(re.match(r'^[a-zA-Z0-9_-]+$', texto))
 
 
 def obtener_cache(key):
@@ -40,6 +46,9 @@ def obtener_cache(key):
 
 
 def guardar_cache(key, valor):
+    if len(CACHE) > CACHE_MAX:
+        CACHE.clear()
+
     CACHE[key] = (valor, datetime.now().timestamp())
 
 
@@ -47,7 +56,8 @@ def cargar_info_mangas():
     try:
         with open("mangas.json", "r", encoding="utf-8") as f:
             return json.load(f)
-    except:
+    except Exception as e:
+        print("Error cargando mangas.json:", e)
         return {}
 
 
@@ -62,6 +72,9 @@ def ordenar_cap(cap):
 
 
 def obtener_caps_recientes(manga):
+    if not es_valido(manga):
+        return []
+
     cache_key = f"recientes:{manga}"
     cache = obtener_cache(cache_key)
 
@@ -96,15 +109,17 @@ def obtener_caps_recientes(manga):
                 caps_recientes.append(cap)
 
     except Exception as e:
-        print(f"Error obtener_caps_recientes({manga}): {e}")
+        print(f"Error obtener_caps_recientes({manga}):", e)
 
     caps_recientes.sort(key=ordenar_cap)
-
     guardar_cache(cache_key, caps_recientes)
     return caps_recientes
 
 
 def obtener_caps(manga):
+    if not es_valido(manga):
+        return []
+
     cache_key = f"caps:{manga}"
     cache = obtener_cache(cache_key)
 
@@ -120,11 +135,15 @@ def obtener_caps(manga):
         guardar_cache(cache_key, caps)
         return caps
 
-    except:
+    except Exception as e:
+        print("Error obtener_caps:", e)
         return []
 
 
 def obtener_imagenes(manga, cap):
+    if not es_valido(manga) or not es_valido(cap):
+        return []
+
     cache_key = f"imagenes:{manga}:{cap}"
     cache = obtener_cache(cache_key)
 
@@ -159,7 +178,8 @@ def obtener_imagenes(manga, cap):
         guardar_cache(cache_key, urls)
         return urls
 
-    except:
+    except Exception as e:
+        print("Error obtener_imagenes:", e)
         return []
 
 
@@ -185,7 +205,8 @@ def obtener_novedades_manga(manga, capitulos):
 
         return "cap_nuevo", caps_recientes[-1]
 
-    except:
+    except Exception as e:
+        print("Error novedades:", e)
         return None, None
 
 
@@ -203,6 +224,9 @@ def obtener_mangas():
 
         for f in result.get("folders", []):
             nombre = f["name"]
+
+            if not es_valido(nombre):
+                continue
 
             capitulos = obtener_caps(nombre)
 
@@ -236,7 +260,8 @@ def obtener_mangas():
         guardar_cache("mangas", (mangas_emision, mangas_finalizados))
         return mangas_emision, mangas_finalizados
 
-    except:
+    except Exception as e:
+        print("Error obtener_mangas:", e)
         return {}, {}
 
 
@@ -250,27 +275,19 @@ def main():
                            mangas_finalizados=mangas_finalizados)
 
 
-@app.route("/contacto")
-def contacto():
-    mangas_emision, mangas_finalizados = obtener_mangas()
-    todos = {**mangas_emision, **mangas_finalizados}
-    return render_template("contacto.html", mangas=todos)
-
-
-@app.route("/favoritos")
-def favoritos():
-    mangas_emision, mangas_finalizados = obtener_mangas()
-    todos = {**mangas_emision, **mangas_finalizados}
-    return render_template("favoritos.html", mangas=todos)
-
-
 @app.route("/capitulo/<manga>/<cap>")
 def capitulo(manga, cap):
+    if not es_valido(manga) or not es_valido(cap):
+        return jsonify([]), 400
+
     return jsonify(obtener_imagenes(manga, cap))
 
 
 @app.route("/manga/<manga>")
 def info(manga):
+    if not es_valido(manga):
+        return "Invalid", 400
+
     mangas_emision, mangas_finalizados = obtener_mangas()
     todos = {**mangas_emision, **mangas_finalizados}
 
@@ -311,6 +328,9 @@ def info(manga):
 
 @app.route("/manga/<manga>/<cap>")
 def leer(manga, cap):
+    if not es_valido(manga) or not es_valido(cap):
+        return "Invalid", 400
+
     mangas_emision, mangas_finalizados = obtener_mangas()
     todos = {**mangas_emision, **mangas_finalizados}
 
@@ -325,4 +345,4 @@ def leer(manga, cap):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)

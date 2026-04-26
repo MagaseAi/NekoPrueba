@@ -125,17 +125,21 @@ h2 {
 
 .pagination {
   margin-top: 25px;
-  text-align: center;
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  gap: 8px; 
 }
 
 .pagination a {
-  margin: 5px;
   padding: 8px 12px;
   background: #222;
   color: white;
   text-decoration: none;
   border-radius: 6px;
   transition: 0.2s;
+  min-width: 40px;   
+  text-align: center;
 }
 
 .pagination a:hover {
