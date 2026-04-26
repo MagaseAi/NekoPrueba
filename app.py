@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import cloudinary
 import cloudinary.api
 from cloudinary import search 
+from urllib.parse import unquote
 
 load_dotenv()
 
@@ -28,7 +29,8 @@ CACHE_MAX = 1000
 
 
 def es_valido(texto):
-    return bool(re.match(r'^[a-zA-Z0-9_-]+$', texto))
+    texto = unquote(texto)
+    return bool(re.match(r'^[a-zA-Z0-9 _.-]+$', texto))
 
 
 def obtener_cache(key):
@@ -72,6 +74,8 @@ def ordenar_cap(cap):
 
 
 def obtener_caps_recientes(manga):
+    manga = unquote(manga)
+
     if not es_valido(manga):
         return []
 
@@ -117,6 +121,8 @@ def obtener_caps_recientes(manga):
 
 
 def obtener_caps(manga):
+    manga = unquote(manga)
+
     if not es_valido(manga):
         return []
 
@@ -141,6 +147,9 @@ def obtener_caps(manga):
 
 
 def obtener_imagenes(manga, cap):
+    manga = unquote(manga)
+    cap = unquote(cap)
+
     if not es_valido(manga) or not es_valido(cap):
         return []
 
@@ -235,7 +244,6 @@ def obtener_mangas():
             prioridad = 2 if tipo_novedad == "manga_nuevo" else 1 if tipo_novedad == "cap_nuevo" else 0
 
             info_manga = INFO_MANGAS.get(nombre, {})
-
             titulo = info_manga.get("titulo", nombre.replace("_", " ").title())
 
             estado = info_manga.get("estado", "En emision")
@@ -280,6 +288,9 @@ def main():
 
 @app.route("/capitulo/<manga>/<cap>")
 def capitulo(manga, cap):
+    manga = unquote(manga)
+    cap = unquote(cap)
+
     if not es_valido(manga) or not es_valido(cap):
         return jsonify([]), 400
 
@@ -288,6 +299,8 @@ def capitulo(manga, cap):
 
 @app.route("/manga/<manga>")
 def info(manga):
+    manga = unquote(manga)
+
     if not es_valido(manga):
         return "Invalid", 400
 
@@ -331,6 +344,9 @@ def info(manga):
 
 @app.route("/manga/<manga>/<cap>")
 def leer(manga, cap):
+    manga = unquote(manga)
+    cap = unquote(cap)
+
     if not es_valido(manga) or not es_valido(cap):
         return "Invalid", 400
 
