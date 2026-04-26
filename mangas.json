@@ -1,80 +1,96 @@
 {
   "El_exorcista_de_Nue": {
     "titulo": "El exorcista de Nue",
+    "tipo": "Manga",
     "alternativos": "Nue no onmyuji",
     "mangaka": "Kawae Kouta",
     "editorial": "Shueisha",
     "generos": "Acción, Sobrenatural",
+    "demografia":"Shounen",
     "estado": "Publicación",
     "sinopsis": "Pos Gakuro y sus 100 novias"
   },
 
   "Witchriv": {
     "titulo": "Witchriv",
+    "tipo": "Manga",
     "alternativos": "Nue no onmyuji",
     "mangaka": "Haruki",
     "editorial": "Shueisha",
     "generos": "Aventura, Acción",
+    "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Si"
   },
 
   "La_elegante_flor_florece_con_dignidad": {
     "titulo": "La elegante flor florece con dignidad",
+    "tipo": "Manga",
     "alternativos": "Nue no onmyuji",
     "mangaka": "Haruki",
     "editorial": "Shueisha",
     "generos": "Aventura, Acción",
+    "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Si"
   },
 
   "Akanabe_no_sabe_que_es_la_verguenza": {
     "titulo": "Akanabe no sabe que es la verguenza",
+    "tipo": "Manga",
     "alternativos": "Nue no onmyuji",
     "mangaka": "Haruki",
     "editorial": "Shueisha",
     "generos": "Aventura, Acción",
+    "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Si"
 },
 
  "Entonces_no_te_gustaba": {
     "titulo": "¡¿Entonces no te gustaba?!",
+    "tipo": "Manga",
     "alternativos": "Watashi no koto suki janakatta no ka yo?!",
     "mangaka": "Konbu Wakame",
     "editorial": "...",
     "generos": "Comedia, Romance, Harem, Vida escolar",
+    "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Okabe juro enfocarse en sus estudios, pero por alguna razón, las chicas a su alrededor siguen enviando señales confusas… "
 },
 
  "Kaedegami": {
     "titulo": "Kaedegami",
+    "tipo": "Manga",
     "alternativos": "Nue no onmyuji",
     "mangaka": "Haruki",
     "editorial": "Shueisha",
     "generos": "Aventura, Acción",
+    "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Si"
 },
 
  "Henai": {
     "titulo": "¡Mi novia me da escalofrios!",
+    "tipo": "Manga",
     "alternativos": "Nue no onmyuji",
     "mangaka": "Haruki",
     "editorial": "Shueisha",
     "generos": "Aventura, Acción",
+    "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Si"
 },
 
  "Todo_es_culpa_de_Shinka-chan": {
     "titulo": "Todo es culpa de Shinka-chan",
+    "tipo": "Manga",
     "alternativos": "ぜんぶシンカちゃんのせい, Zenbu Shinka-chan no Sei",
     "mangaka": "Rootport, Shiori",
     "editorial": "Shueisha",
     "generos": "Comedia, Romance, Vida escolar",
+    "demografia":"Shounen", 
     "estado": "Finalizado",
     "sinopsis": "¡En el aula después de clase, Shinka-chan, la chica más inocente y bonita de la escuela, me hablaba mientras me tomaba de la mano...! Yo, Touta, me convertí en un sujeto de estudio de la psicología evolutiva, y desde el primer día que hablamos, ¡Comencé a salir con Shinka...!"
 }
