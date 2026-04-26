@@ -235,11 +235,14 @@ def obtener_mangas():
             prioridad = 2 if tipo_novedad == "manga_nuevo" else 1 if tipo_novedad == "cap_nuevo" else 0
 
             info_manga = INFO_MANGAS.get(nombre, {})
+
+            titulo = info_manga.get("titulo", nombre.replace("_", " ").title())
+
             estado = info_manga.get("estado", "En emision")
             es_finalizado = estado.lower() == "finalizado"
 
             data = {
-                "titulo": nombre,
+                "titulo": titulo,
                 "path": f["path"],
                 "es_manga_nuevo": tipo_novedad == "manga_nuevo",
                 "es_cap_nuevo": tipo_novedad == "cap_nuevo",
