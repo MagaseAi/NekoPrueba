@@ -2,46 +2,46 @@
   "El_exorcista_de_Nue": {
     "titulo": "El exorcista de Nue",
     "tipo": "Manga",
-    "alternativos": "Nue no onmyuji",
+    "alternativos": "Nue no onmyuji, 鵺の陰陽師, Nue's Exorcist",
     "mangaka": "Kawae Kouta",
     "editorial": "Shueisha",
-    "generos": "Acción, Sobrenatural",
+    "generos": "Acción, Sobrenatural, Comedia, Romance, Harem, Ecchi",
     "demografia":"Shounen",
-    "estado": "Publicación",
+    "estado": "En emisión",
     "sinopsis": "Pos Gakuro y sus 100 novias"
   },
 
   "Witchriv": {
     "titulo": "Witchriv",
     "tipo": "Manga",
-    "alternativos": "Nue no onmyuji",
+    "alternativos": "ウィッチリヴ",
     "mangaka": "Haruki",
     "editorial": "Shueisha",
-    "generos": "Aventura, Acción",
+    "generos": "Aventura, Acción, Drama, Fantasia, Thriller",
     "demografia":"Shounen",
     "estado": "En emisión",
-    "sinopsis": "Si"
+    "sinopsis": "Una chica llamada Nona vive entre los humanos sin llamar la atención, ocultando su verdadera identidad como maga mientras pasa sus días en paz con su mejor amiga Lovi. Pero un día, Nona utiliza la magia para arreglar las gafas de Lovi y, como consecuencia, llama la atención de la Junta de Vigilancia Mágica. "
   },
 
   "La_elegante_flor_florece_con_dignidad": {
     "titulo": "La elegante flor florece con dignidad",
     "tipo": "Manga",
-    "alternativos": "Nue no onmyuji",
-    "mangaka": "Haruki",
-    "editorial": "Shueisha",
-    "generos": "Aventura, Acción",
+    "alternativos": "Kaoru Hana wa Rin to Saku, 薫る花は凛と咲く,",
+    "mangaka": "Mikami Saka",
+    "editorial": "Kodansha",
+    "generos": "Comedia, Romance, Vida escolar, Recuentos de la vida, Drama",
     "demografia":"Shounen",
     "estado": "En emisión",
-    "sinopsis": "Si"
+    "sinopsis": "En un lugar determinado, hay dos escuelas preparatorias vecinas. La Preparatoria Chidori, una escuela de chicos de bajo nivel donde se reúnen los idiotas, y la Escuela para Señoritas Kikyo, una prestigiosa escuela de chicas. Rintaro Tsumugi, un fuerte y silencioso estudiante de segundo año de la Preparatoria Chidori, conoce a Kaoruko Waguri, una chica que llega como cliente mientras él ayuda en la pastelería de su familia. Rintaro se siente cómodo pasando tiempo con Kaoruko, pero ella es una estudiante de Kikyo, la escuela vecina que detesta profundamente a Chidori."
   },
 
   "Akanabe_no_sabe_que_es_la_verguenza": {
     "titulo": "Akanabe no sabe que es la verguenza",
     "tipo": "Manga",
-    "alternativos": "Nue no onmyuji",
-    "mangaka": "Haruki",
+    "alternativos": "茜部先生は照れ知らず, Akanabe-sensei wa Tereshirazu",
+    "mangaka": "Naoya Tajimi",
     "editorial": "Shueisha",
-    "generos": "Aventura, Acción",
+    "generos": "Comedia, Romance, Vida escolar, Recuentos de la vida, Ecchi",
     "demografia":"Shounen",
     "estado": "En emisión",
     "sinopsis": "Si"
@@ -50,9 +50,9 @@
  "Entonces_no_te_gustaba": {
     "titulo": "¡¿Entonces no te gustaba?!",
     "tipo": "Manga",
-    "alternativos": "Watashi no koto suki janakatta no ka yo?!",
+    "alternativos": "Watashi no koto suki janakatta no ka yo?!, 私のこと好きじゃなかったのかよ!?",
     "mangaka": "Konbu Wakame",
-    "editorial": "...",
+    "editorial": "Shueisha",
     "generos": "Comedia, Romance, Harem, Vida escolar",
     "demografia":"Shounen",
     "estado": "En emisión",
@@ -62,25 +62,25 @@
  "Kaedegami": {
     "titulo": "Kaedegami",
     "tipo": "Manga",
-    "alternativos": "Nue no onmyuji",
-    "mangaka": "Haruki",
+    "alternativos": "カエデガミ",
+    "mangaka": "Harukawa Jun",
     "editorial": "Shueisha",
-    "generos": "Aventura, Acción",
+    "generos": "Aventura, Acción, Sobrenatural, Ecchi, Fantasia, Misterio, Romance",
     "demografia":"Shounen",
     "estado": "En emisión",
-    "sinopsis": "Si"
+    "sinopsis": "Una relación secreta con una entidad misteriosa... En un mundo con monstruos demoníacos llamados Shenguai, un joven huérfano llamado Kou vive solo en las montañas con una misteriosa Shenguai llamada Chiyou. Pero Chiyou tiene un pasado trágico, y Kou tendrá que darlo todo de sí mismo para salvarla."
 },
 
  "Henai": {
-    "titulo": "¡Mi novia me da escalofrios!",
+    "titulo": "¡Mi novia me pone la piel de gallina!",
     "tipo": "Manga",
-    "alternativos": "Nue no onmyuji",
-    "mangaka": "Haruki",
+    "alternativos": "Henai Heartbeat, 偏愛ハートビート",
+    "mangaka": "Shunsuke Lino",
     "editorial": "Shueisha",
-    "generos": "Aventura, Acción",
+    "generos": "Psicologico, Romance, Thriller, Vida escolar",
     "demografia":"Shounen",
     "estado": "En emisión",
-    "sinopsis": "Si"
+    "sinopsis": "Haruka Kawatsuji es un joven que de niño sobrevivió milagrosamente a una caída desde el balcón de su apartamento. Por desgracia, a pesar de sus esfuerzos por encontrar esa misma emoción en los deportes y las películas de terror, nunca ha conseguido sentirse tan vivo desde entonces. Sin embargo, todo eso puede estar a punto de cambiar en un fatídico encuentro con una chica muy excéntrica."
 },
 
  "Todo_es_culpa_de_Shinka-chan": {
