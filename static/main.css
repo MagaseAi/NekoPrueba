@@ -435,4 +435,20 @@ a:focus {
     background: linear-gradient(90deg, #93e745e6, #93e745e6);
 }
 
+.titulo-finalizados {
+    margin-top: 50px;
+}
 
+.barra-finalizado {
+    position: static;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 6px;
+    color: white;
+    font-weight: bold;
+    font-size: 13px;
+    text-align: center;
+    font-style: italic;
+    background: linear-gradient(90deg, rgba(255,140,0,0.9), rgba(255,100,0,0.9));
+    border-radius: 5px;
+}

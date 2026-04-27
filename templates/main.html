@@ -108,10 +108,8 @@
                 {% for key, manga in mangas_finalizados.items() %}
                 <a href="/manga/{{ key }}" class="manga-link">
                     <div class="manga-card">
-                        
-                        <div class="barra-finalizado">Finalizado</div>
-                        
                         <img src="{{ url_for('static', filename='portadas/' + key + '.png') }}" alt="{{ manga.titulo }}">
+                        <div class="barra-finalizado">Finalizado</div>
                         <p>{{ manga.titulo }}</p>
                     </div>
                 </a>
