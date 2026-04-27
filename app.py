@@ -286,6 +286,21 @@ def main():
                            mangas_finalizados=mangas_finalizados)
 
 
+# 🔥 NUEVAS RUTAS
+@app.route("/contacto")
+def contacto():
+    mangas_emision, mangas_finalizados = obtener_mangas()
+    todos = {**mangas_emision, **mangas_finalizados}
+    return render_template("contacto.html", mangas=todos)
+
+
+@app.route("/favoritos")
+def favoritos():
+    mangas_emision, mangas_finalizados = obtener_mangas()
+    todos = {**mangas_emision, **mangas_finalizados}
+    return render_template("favoritos.html", mangas=todos)
+
+
 @app.route("/capitulo/<manga>/<cap>")
 def capitulo(manga, cap):
     manga = unquote(manga)

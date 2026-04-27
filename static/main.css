@@ -439,6 +439,17 @@ a:focus {
     margin-top: 50px;
 }
 
-.barra-naranja {
+.barra-finalizado {
+    position: absolute;
+    top: 10px; 
+    left: 0;
+    right: 0;
+    padding: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    font-style: italic;
+    z-index: 5;
     background: linear-gradient(90deg, rgba(255,140,0,0.9), rgba(255,100,0,0.9));
 }
